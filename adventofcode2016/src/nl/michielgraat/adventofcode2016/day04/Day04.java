@@ -1,6 +1,5 @@
 package nl.michielgraat.adventofcode2016.day04;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;

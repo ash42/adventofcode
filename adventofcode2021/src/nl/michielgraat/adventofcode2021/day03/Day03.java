@@ -76,12 +76,10 @@ public class Day03 {
         final List<String> co = new ArrayList<>(lines);
         for (int i = 0; i < lines.get(0).length(); i++) {
             if (ox.size() > 1) {
-                final int expectedOx = getMostCommon(ox, i);
-                ox.removeAll(getLinesToRemove(ox, i, expectedOx));
+                ox.removeAll(getLinesToRemove(ox, i, getMostCommon(ox, i)));
             }
             if (co.size() > 1) {
-                final int expectedCo = 1 - getMostCommon(co, i);
-                co.removeAll(getLinesToRemove(co, i, expectedCo));
+                co.removeAll(getLinesToRemove(co, i, 1 - getMostCommon(co, i)));
             }
         }
         return Integer.parseInt(ox.get(0), 2) * Integer.parseInt(co.get(0), 2);

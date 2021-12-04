@@ -1,7 +1,6 @@
 package nl.michielgraat.adventofcode2021.day04;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,10 +11,10 @@ import nl.michielgraat.adventofcode2021.FileReader;
 public class Day04 {
     private static final String FILENAME = "day04.txt";
     
-    private List<BingoCard> getBingoCards(List<String> lines) {
-        List<BingoCard> cards = new ArrayList<>();
+    private List<BingoCard> getBingoCards(final List<String> lines) {
+        final List<BingoCard> cards = new ArrayList<>();
         for (int i = 2; i < lines.size(); i+=6) {
-            List<String> input = new ArrayList<>();
+            final List<String> input = new ArrayList<>();
             input.add(lines.get(i));
             input.add(lines.get(i+1));
             input.add(lines.get(i+2));
@@ -26,13 +25,13 @@ public class Day04 {
         return cards;
     }
 
-    public int runPart2(List<String> lines) {
-        List<Integer> draw = Stream.of(lines.get(0).split(",")).map(Integer::parseInt).collect(Collectors.toList());
-        List<BingoCard> cards = getBingoCards(lines);
-        List<BingoCard> completedCards = new ArrayList<>();
+    public int runPart2(final List<String> lines) {
+        final List<Integer> draw = Stream.of(lines.get(0).split(",")).map(Integer::parseInt).collect(Collectors.toList());
+        final List<BingoCard> cards = getBingoCards(lines);
+        final List<BingoCard> completedCards = new ArrayList<>();
 
-        for (int nr : draw) {
-            for (BingoCard card : cards) {
+        for (final int nr : draw) {
+            for (final BingoCard card : cards) {
                 if (!completedCards.contains(card)) {
                     card.mark(nr);
                     if (card.thatsaBingo()) {
@@ -48,12 +47,12 @@ public class Day04 {
         return 0;
     }
 
-    public int runPart1(List<String> lines) {
-        List<Integer> draw = Stream.of(lines.get(0).split(",")).map(Integer::parseInt).collect(Collectors.toList());
-        List<BingoCard> cards = getBingoCards(lines);
+    public int runPart1(final List<String> lines) {
+        final List<Integer> draw = Stream.of(lines.get(0).split(",")).map(Integer::parseInt).collect(Collectors.toList());
+        final List<BingoCard> cards = getBingoCards(lines);
         
-        for (int nr : draw) {
-            for (BingoCard card : cards) {
+        for (final int nr : draw) {
+            for (final BingoCard card : cards) {
                 card.mark(nr);
                 if (card.thatsaBingo()) {
                     return card.getSumOfUnmarkedNrs() * nr;
@@ -79,26 +78,26 @@ public class Day04 {
 
 class BingoCard {
 
-    private int[] nrs = new int[25];
-    private boolean[] marked = new boolean[25];
+    private final int[] nrs = new int[25];
+    private final boolean[] marked = new boolean[25];
 
-    BingoCard(List<String> lines) {
+    BingoCard(final List<String> lines) {
         init(lines);
     }
 
-    private void init(List<String> lines) {
+    private void init(final List<String> lines) {
         int i = 0;
-        for (String line : lines) {
-            String[] sNrs = line.trim().split("\\s+");
-            for (String sNr : sNrs) {
-                int nr = Integer.parseInt(sNr);
+        for (final String line : lines) {
+            final String[] sNrs = line.trim().split("\\s+");
+            for (final String sNr : sNrs) {
+                final int nr = Integer.parseInt(sNr);
                 nrs[i] = nr;
                 i++;
             }
         }
     }
 
-    void mark(int nr) {
+    void mark(final int nr) {
         for (int i=0; i<25; i++) {
             if (nrs[i] == nr) {
                 marked[i] = true;

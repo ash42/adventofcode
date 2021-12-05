@@ -30,7 +30,7 @@ public class Day05 {
             final int endy = (x1 == endx) ? y1 : y2;
 
             while (startx <= endx) {
-                grid[startx][starty] = grid[startx][starty] + 1;
+                grid[startx][starty]++;
                 startx++;
                 starty = (starty < endy) ? starty + 1 : starty - 1;
             }
@@ -42,7 +42,7 @@ public class Day05 {
             final int starty = Math.min(y1, y2);
             final int endy = Math.max(y1, y2);
             for (int y = starty; y <= endy; y++) {
-                grid[x1][y] = grid[x1][y] + 1;
+                grid[x1][y]++;
             }
         }
     }
@@ -52,7 +52,7 @@ public class Day05 {
             final int startx = Math.min(x1, x2);
             final int endx = Math.max(x1, x2);
             for (int x = startx; x <= endx; x++) {
-                grid[x][y1] = grid[x][y1] + 1;
+                grid[x][y1]++;
             }
         }
     }

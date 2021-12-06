@@ -69,7 +69,7 @@ public class Day04 {
         System.out.println("Answer to part 1: " + new Day04().runPart1(lines));
         System.out.println("Took: " + (Calendar.getInstance().getTimeInMillis() - start) + " ms");
         start = Calendar.getInstance().getTimeInMillis();
-        System.out.println("Answer to part 1: " + new Day04().runPart2(lines));
+        System.out.println("Answer to part 2: " + new Day04().runPart2(lines));
         System.out.println("Took: " + (Calendar.getInstance().getTimeInMillis() - start) + " ms");
 
     }

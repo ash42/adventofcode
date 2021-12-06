@@ -9,7 +9,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileReader {
-    public static Stream<String> getStringStream(String filename) {
+
+	private FileReader() {
+	}
+
+	public static Stream<String> getStringStream(String filename) {
 		try {
 			return Files.lines(Paths.get("resources", filename));
 		} catch (IOException e) {
@@ -24,15 +28,14 @@ public class FileReader {
 	}
 
 	public static List<Integer> getIntegerList(String filename) {
-		List<Integer> values = new ArrayList<Integer>();
 		Stream<String> stream = getStringStream(filename);
 		List<String> strings = stream.collect(Collectors.toList());
-		values = strings.get(0).chars().map(c -> c - '0').boxed().collect(Collectors.toList());
+		List<Integer> values = strings.get(0).chars().map(c -> c - '0').boxed().collect(Collectors.toList());
 		return values;
 	}
-	
+
 	public static List<Long> getLongList(String filename) {
-		List<Long> values = new ArrayList<Long>();
+		List<Long> values = new ArrayList<>();
 		Stream<String> stream = getStringStream(filename);
 		List<String> strings = stream.collect(Collectors.toList());
 		for (String string : strings) {
@@ -40,9 +43,9 @@ public class FileReader {
 		}
 		return values;
 	}
-	
+
 	public static List<Integer> getCompleteIntegerList(String filename) {
-		List<Integer> values = new ArrayList<Integer>();
+		List<Integer> values = new ArrayList<>();
 		Stream<String> stream = getStringStream(filename);
 		List<String> strings = stream.collect(Collectors.toList());
 		for (String string : strings) {

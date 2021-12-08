@@ -2,9 +2,7 @@ package nl.michielgraat.adventofcode2021.day07;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 import nl.michielgraat.adventofcode2021.FileReader;

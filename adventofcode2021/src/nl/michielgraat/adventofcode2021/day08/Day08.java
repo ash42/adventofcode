@@ -92,7 +92,7 @@ public class Day08 {
         return twoThreeFive.get(0);
     }
 
-    private int getValue(final String input, final List<Character> zero, final List<Character> two, final List<Character> three, final List<Character> five, final List<Character> six) {
+    private int getValue(final String input, final List<Character> zero, final List<Character> two, final List<Character> three, final List<Character> six) {
         final List<Character> inputChars = input.chars().mapToObj(i -> (char) i).collect(Collectors.toList());
         if (input.length() == 2) {
             return 1;
@@ -121,11 +121,11 @@ public class Day08 {
         }
     }
 
-    private int getOutputValue (final String line, final List<Character> zero, final List<Character> two, final List<Character> three, final List<Character> five, final List<Character> six) {
+    private int getOutputValue (final String line, final List<Character> zero, final List<Character> two, final List<Character> three, final List<Character> six) {
         final String[] outputs = line.substring(line.indexOf("|") + 2).split(" ");
         final StringBuilder sOutput = new StringBuilder();
         for (final String output : outputs) {
-            sOutput.append(getValue(output, zero, two, three, five, six));
+            sOutput.append(getValue(output, zero, two, three, six));
         }
         return Integer.parseInt(sOutput.toString());
     }
@@ -140,8 +140,7 @@ public class Day08 {
                 final List<Character> zero = findZero(line, six, nine);
                 final List<Character> three = findThree(line, one);
                 final List<Character> two = findTwo(line, three, four, six);
-                final List<Character> five = findFive(line, two, three);
-                total += getOutputValue(line, zero, two, three, five, six);
+                total += getOutputValue(line, zero, two, three, six);
 
         }
         return total;

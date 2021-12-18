@@ -172,13 +172,13 @@ public class Day18 {
         return Integer.parseInt(input);
     }
 
-    private int runPart2(final List<String> lines) {
+    private int getHighestSum(final List<String> lines) {
         int highest = 0;
         for (int i = 0; i < lines.size() - 1; i++) {
             for (int j = i + 1; j < lines.size(); j++) {
                 final String nr1 = lines.get(i);
                 final String nr2 = lines.get(j);
-                
+
                 String sum = add(nr1, nr2);
                 sum = reduce(sum);
                 int magnitude = getMagnitude(sum);
@@ -197,13 +197,21 @@ public class Day18 {
         return highest;
     }
 
-    private int runPart1(final List<String> lines) {
+    private int getTotalMagnitude(final List<String> lines) {
         String result = lines.get(0);
         for (int i = 1; i < lines.size(); i++) {
             result = add(result, lines.get(i));
             result = reduce(result);
         }
         return getMagnitude(result);
+    }
+
+    private int runPart2(final List<String> lines) {
+        return getHighestSum(lines);
+    }
+
+    private int runPart1(final List<String> lines) {
+        return getTotalMagnitude(lines);
     }
 
     public static void main(final String[] args) {

@@ -24,7 +24,7 @@ public class Day18 {
                 pairCounter--;
             }
         }
-        return pairCounter >= 4;
+        return pairCounter == 4;
     }
 
     private boolean containsExplodablePair(final String input) {

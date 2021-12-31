@@ -5,7 +5,7 @@ public class Position {
     int x;
     int y;
 
-    public Position(char pod, int x, int y) {
+    public Position(final char pod, final int x, final int y) {
         this.pod = pod;
         this.x = x;
         this.y = y;
@@ -22,14 +22,14 @@ public class Position {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Position other = (Position) obj;
+        final Position other = (Position) obj;
         if (pod != other.pod)
             return false;
         if (x != other.x)

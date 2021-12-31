@@ -14,7 +14,7 @@ public class Day23 {
     private static final String FILENAME2 = "day23-2.txt";
 
     private Burrow getGoal() {
-        List<String> lines = new ArrayList<>();
+        final List<String> lines = new ArrayList<>();
         lines.add("#############");
         lines.add("#...........#");
         lines.add("###A#B#C#D###");
@@ -24,7 +24,7 @@ public class Day23 {
     }
 
     private Burrow getGoal2() {
-        List<String> lines = new ArrayList<>();
+        final List<String> lines = new ArrayList<>();
         lines.add("#############");
         lines.add("#...........#");
         lines.add("###A#B#C#D###");
@@ -35,18 +35,18 @@ public class Day23 {
         return new Burrow(lines);
     }
 
-    private long dijkstra(Burrow start, Burrow goal) {
-        PriorityQueue<Burrow> queue = new PriorityQueue<>();
+    private long dijkstra(final Burrow start, final Burrow goal) {
+        final PriorityQueue<Burrow> queue = new PriorityQueue<>();
         queue.add(start);
-        Map<Burrow, Long> energies = new HashMap<>();
+        final Map<Burrow, Long> energies = new HashMap<>();
         energies.put(start, 0L);
         long lowest = Long.MAX_VALUE;
         while (!queue.isEmpty()) {
-            Burrow current = queue.poll();
-            long currentEnergy = current.energy;
-            List<Burrow> neighbours = current.getNeighbours();
-            for (Burrow n : neighbours) {
-                long newEnergy = currentEnergy + n.energy;
+            final Burrow current = queue.poll();
+            final long currentEnergy = current.energy;
+            final List<Burrow> neighbours = current.getNeighbours();
+            for (final Burrow n : neighbours) {
+                final long newEnergy = currentEnergy + n.energy;
                 if (newEnergy < energies.getOrDefault(n, Long.MAX_VALUE)) {
                     if (n.equals(goal) && newEnergy < lowest) {
                         // We should be able to just get the lowest value from the energies map, but
@@ -64,11 +64,11 @@ public class Day23 {
         return lowest;
     }
 
-    private long runPart2(List<String> lines) {
+    private long runPart2(final List<String> lines) {
         return dijkstra(new Burrow(lines), getGoal2());
     }
 
-    private long runPart1(List<String> lines) {
+    private long runPart1(final List<String> lines) {
         return dijkstra(new Burrow(lines), getGoal());
     }
 

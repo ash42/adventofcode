@@ -9,7 +9,7 @@ public class Move {
     int nr;
     long energy;
 
-    public Move(int sX, int sY, int eX, int eY, char pod, int nr) {
+    public Move(final int sX, final int sY, final int eX, final int eY, final char pod, final int nr) {
         this.sX = sX;
         this.sY = sY;
         this.eX = eX;

@@ -54,27 +54,27 @@ public class Day24 {
     private static final int NR_INPUTS = 14;
     private static final List<Integer> VALID_DIGITS = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    private List<Input> getInputs(List<String> lines) {
-        int size = lines.size() / NR_INPUTS;
-        List<Input> inputs = new ArrayList<>();
+    private List<Input> getInputs(final List<String> lines) {
+        final int size = lines.size() / NR_INPUTS;
+        final List<Input> inputs = new ArrayList<>();
         for (int i = 0; i < lines.size(); i += size) {
-            boolean trunc = lines.get(i + IDX_TRUNC).endsWith("26");
-            int xIncr = Integer.parseInt(lines.get(i + IDX_X_INCR).split(" ")[2]);
-            int yIncr = Integer.parseInt(lines.get(i + IDX_Y_INCR).split(" ")[2]);
+            final boolean trunc = lines.get(i + IDX_TRUNC).endsWith("26");
+            final int xIncr = Integer.parseInt(lines.get(i + IDX_X_INCR).split(" ")[2]);
+            final int yIncr = Integer.parseInt(lines.get(i + IDX_Y_INCR).split(" ")[2]);
             inputs.add(new Input(trunc, xIncr, yIncr));
         }
         return inputs;
     }
 
-    private List<Rule> getRules(List<Input> inputs) {
-        Deque<Rule> stack = new LinkedList<>();
+    private List<Rule> getRules(final List<Input> inputs) {
+        final Deque<Rule> stack = new LinkedList<>();
         int i = 0;
-        List<Rule> result = new ArrayList<>();
-        for (Input input : inputs) {
+        final List<Rule> result = new ArrayList<>();
+        for (final Input input : inputs) {
             if (!input.truncateZ) {
                 stack.push(new Rule(i, input.yIncr));
             } else {
-                Rule top = stack.pop();
+                final Rule top = stack.pop();
                 result.add(new Rule(i, top.nr, top.incr + input.xIncr));
             }
             i++;
@@ -82,31 +82,31 @@ public class Day24 {
         return result;
     }
 
-    private boolean isValid(int i) {
+    private boolean isValid(final int i) {
         return i >= 1 && i <= 9;
     }
 
-    private String getNr(List<Rule> rules, boolean min) {
-        int[] nr = new int[NR_INPUTS];
-        for (Rule r : rules) {
-            int i1 = r.nr;
-            int i2 = r.other;
-            int incr = r.incr;
-            IntStream is = VALID_DIGITS.stream().filter(d -> isValid(incr + d)).mapToInt(i -> i);
-            int i2val = (min) ? is.min().orElseThrow(NoSuchElementException::new)
+    private String getNr(final List<Rule> rules, final boolean min) {
+        final int[] nr = new int[NR_INPUTS];
+        for (final Rule r : rules) {
+            final int i1 = r.nr;
+            final int i2 = r.other;
+            final int incr = r.incr;
+            final IntStream is = VALID_DIGITS.stream().filter(d -> isValid(incr + d)).mapToInt(i -> i);
+            final int i2val = (min) ? is.min().orElseThrow(NoSuchElementException::new)
                     : is.max().orElseThrow(NoSuchElementException::new);
-            int i1val = i2val + r.incr;
+            final int i1val = i2val + r.incr;
             nr[i1] = i1val;
             nr[i2] = i2val;
         }
         return Arrays.stream(nr).mapToObj(String::valueOf).collect(Collectors.joining());
     }
 
-    private String runPart2(List<String> lines) {
+    private String runPart2(final List<String> lines) {
         return getNr(getRules(getInputs(lines)), true);
     }
 
-    private String runPart1(List<String> lines) {
+    private String runPart1(final List<String> lines) {
         return getNr(getRules(getInputs(lines)), false);
     }
 
@@ -126,12 +126,12 @@ class Rule {
     int other;
     int incr;
 
-    Rule(int nr, int incr) {
+    Rule(final int nr, final int incr) {
         this.nr = nr;
         this.incr = incr;
     }
 
-    Rule(int nr, int other, int incr) {
+    Rule(final int nr, final int other, final int incr) {
         this.nr = nr;
         this.other = other;
         this.incr = incr;
@@ -143,7 +143,7 @@ class Input {
     int xIncr;
     int yIncr;
 
-    Input(boolean truncateZ, int xIncr, int yIncr) {
+    Input(final boolean truncateZ, final int xIncr, final int yIncr) {
         this.truncateZ = truncateZ;
         this.xIncr = xIncr;
         this.yIncr = yIncr;

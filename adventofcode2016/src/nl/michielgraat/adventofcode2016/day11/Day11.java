@@ -15,17 +15,17 @@ public class Day11 {
     private static final String FILENAME = "day11.txt";
     private static final String FILENAME2 = "day11-2.txt";
 
-    public int dijkstra(Node start, Node end) {
-        PriorityQueue<Node> queue = new PriorityQueue<>();
+    public int dijkstra(final Node start, final Node end) {
+        final PriorityQueue<Node> queue = new PriorityQueue<>();
         queue.offer(start);
         final Map<Node, Integer> distances = new HashMap<>();
         distances.put(start, 0);
         while (!queue.isEmpty()) {
-            Node current = queue.poll();
-            int dist = current.steps;
-            List<Node> neighbours = current.getNeighbours();
-            for (Node neighbour : neighbours) {
-                int ndist = dist + 1;
+            final Node current = queue.poll();
+            final int dist = current.steps;
+            final List<Node> neighbours = current.getNeighbours();
+            for (final Node neighbour : neighbours) {
+                final int ndist = dist + 1;
                 if (ndist < distances.getOrDefault(neighbour, Integer.MAX_VALUE)) {
                     distances.put(neighbour, ndist);
                     queue.remove(neighbour);
@@ -39,12 +39,12 @@ public class Day11 {
                 .map(Entry::getValue).mapToInt(d -> d).min().orElseThrow(NoSuchElementException::new);
     }
 
-    Node getEnd(Node start) {
-        Node end = new Node();
+    Node getEnd(final Node start) {
+        final Node end = new Node();
         end.floors[0] = new Floor();
         end.floors[1] = new Floor();
         end.floors[2] = new Floor();
-        Floor top = new Floor();
+        final Floor top = new Floor();
         top.getChips().addAll(start.floors[0].getChips());
         top.getChips().addAll(start.floors[1].getChips());
         top.getChips().addAll(start.floors[2].getChips());
@@ -58,13 +58,13 @@ public class Day11 {
         return end;
     }
 
-    public int runPart2(List<String> lines) {
-        Node start = new Node().initialize(lines);
+    public int runPart2(final List<String> lines) {
+        final Node start = new Node().initialize(lines);
         return dijkstra(start, getEnd(start));
     }
 
-    public int runPart1(List<String> lines) {
-        Node start = new Node().initialize(lines);
+    public int runPart1(final List<String> lines) {
+        final Node start = new Node().initialize(lines);
         return dijkstra(start, getEnd(start));
     }
 

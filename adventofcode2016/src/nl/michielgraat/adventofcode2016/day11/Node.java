@@ -19,7 +19,7 @@ public class Node implements Comparable<Node> {
         floors[3] = new Floor();
     }
 
-    Node(int elevator, int steps) {
+    Node(final int elevator, final int steps) {
         this.steps = steps;
         this.elevator = elevator;
         floors[0] = new Floor();
@@ -28,12 +28,12 @@ public class Node implements Comparable<Node> {
         floors[3] = new Floor();
     }
 
-    Node getCopy(int next) {
-        Node newNode = new Node(next, steps + 1);
-        Floor f1 = new Floor();
-        Floor f2 = new Floor();
-        Floor f3 = new Floor();
-        Floor f4 = new Floor();
+    Node getCopy(final int next) {
+        final Node newNode = new Node(next, steps + 1);
+        final Floor f1 = new Floor();
+        final Floor f2 = new Floor();
+        final Floor f3 = new Floor();
+        final Floor f4 = new Floor();
         f1.getChips().addAll(floors[0].getChips());
         f1.getGenerators().addAll(floors[0].getGenerators());
         f2.getChips().addAll(floors[1].getChips());
@@ -49,13 +49,13 @@ public class Node implements Comparable<Node> {
         return newNode;
     }
 
-    List<Node> getChipGeneratorCombos(int current, int next) {
-        List<Node> neighbours = new ArrayList<>();
-        List<String> chips = floors[current].getChips();
-        for (String chip : chips) {
+    List<Node> getChipGeneratorCombos(final int current, final int next) {
+        final List<Node> neighbours = new ArrayList<>();
+        final List<String> chips = floors[current].getChips();
+        for (final String chip : chips) {
             // Chip/generator combo
             if (floors[current].containsGenerator(chip)) {
-                Node newNode = getCopy(next);
+                final Node newNode = getCopy(next);
                 newNode.floors[current].getChips().remove(chip);
                 newNode.floors[current].getGenerators().remove(chip);
                 newNode.floors[next].getChips().add(chip);
@@ -67,15 +67,15 @@ public class Node implements Comparable<Node> {
         return neighbours;
     }
 
-    List<Node> getChipCombos(int current, int next) {
-        List<Node> neighbours = new ArrayList<>();
-        List<String> chips = floors[current].getChips();
+    List<Node> getChipCombos(final int current, final int next) {
+        final List<Node> neighbours = new ArrayList<>();
+        final List<String> chips = floors[current].getChips();
         if (chips.size() > 1) {
             for (int i = 0; i < chips.size() - 1; i++) {
                 for (int j = i + 1; j < chips.size(); j++) {
-                    String chip1 = floors[current].getChips().get(i);
-                    String chip2 = floors[current].getChips().get(j);
-                    Node newNode = getCopy(next);
+                    final String chip1 = floors[current].getChips().get(i);
+                    final String chip2 = floors[current].getChips().get(j);
+                    final Node newNode = getCopy(next);
                     newNode.floors[current].getChips().remove(chip1);
                     newNode.floors[current].getChips().remove(chip2);
                     newNode.floors[next].getChips().add(chip1);
@@ -91,15 +91,15 @@ public class Node implements Comparable<Node> {
         return neighbours;
     }
 
-    List<Node> getGeneratorCombos(int current, int next) {
-        List<Node> neighbours = new ArrayList<>();
-        List<String> generators = floors[current].getGenerators();
+    List<Node> getGeneratorCombos(final int current, final int next) {
+        final List<Node> neighbours = new ArrayList<>();
+        final List<String> generators = floors[current].getGenerators();
         if (generators.size() > 1) {
             for (int i = 0; i < generators.size() - 1; i++) {
                 for (int j = i + 1; j < generators.size(); j++) {
-                    String gen1 = floors[current].getGenerators().get(i);
-                    String gen2 = floors[current].getGenerators().get(j);
-                    Node newNode = getCopy(next);
+                    final String gen1 = floors[current].getGenerators().get(i);
+                    final String gen2 = floors[current].getGenerators().get(j);
+                    final Node newNode = getCopy(next);
                     newNode.floors[current].getGenerators().remove(gen1);
                     newNode.floors[current].getGenerators().remove(gen2);
                     newNode.floors[next].getGenerators().add(gen1);
@@ -115,18 +115,18 @@ public class Node implements Comparable<Node> {
         return neighbours;
     }
 
-    List<Node> getDouble(int current, int next) {
-        List<Node> neighbours = getChipGeneratorCombos(current, next);
+    List<Node> getDouble(final int current, final int next) {
+        final List<Node> neighbours = getChipGeneratorCombos(current, next);
         neighbours.addAll(getChipCombos(current, next));
         neighbours.addAll(getGeneratorCombos(current, next));
         return neighbours;
     }
 
-    List<Node> getSingle(int current, int next, boolean chip) {
-        List<Node> neighbours = new ArrayList<>();
-        List<String> elements = chip ? floors[current].getChips() : floors[current].getGenerators();
-        for (String element : elements) {
-            Node newNode = getCopy(next);
+    List<Node> getSingle(final int current, final int next, final boolean chip) {
+        final List<Node> neighbours = new ArrayList<>();
+        final List<String> elements = chip ? floors[current].getChips() : floors[current].getGenerators();
+        for (final String element : elements) {
+            final Node newNode = getCopy(next);
             if (chip) {
                 newNode.floors[current].getChips().remove(element);
                 newNode.floors[next].getChips().add(element);
@@ -162,9 +162,9 @@ public class Node implements Comparable<Node> {
         return neighbours;
     }
 
-    private List<String> getEquipment(String line, String t) {
-        List<String> equipment = new ArrayList<>();
-        String[] elements = line.split(" ");
+    private List<String> getEquipment(final String line, final String t) {
+        final List<String> equipment = new ArrayList<>();
+        final String[] elements = line.split(" ");
         for (int i = 0; i < elements.length; i++) {
             if (elements[i].contains(t)) {
                 String type = elements[i - 1];
@@ -177,13 +177,13 @@ public class Node implements Comparable<Node> {
         return equipment;
     }
 
-    Node initialize(List<String> lines) {
-        for (String line : lines) {
+    Node initialize(final List<String> lines) {
+        for (final String line : lines) {
             if (!line.contains("nothing")) {
-                String[] elements = line.split(" ");
-                String floor = elements[1];
-                List<String> chips = getEquipment(line, "microchip");
-                List<String> generators = getEquipment(line, "generator");
+                final String[] elements = line.split(" ");
+                final String floor = elements[1];
+                final List<String> chips = getEquipment(line, "microchip");
+                final List<String> generators = getEquipment(line, "generator");
                 if (floor.equals("first")) {
                     floors[0].setChips(chips);
                     floors[0].setGenerators(generators);
@@ -208,7 +208,7 @@ public class Node implements Comparable<Node> {
         return visited;
     }
 
-    public void setVisited(boolean visited) {
+    public void setVisited(final boolean visited) {
         this.visited = visited;
     }
 
@@ -223,7 +223,7 @@ public class Node implements Comparable<Node> {
     }
 
     @Override
-    public int compareTo(Node o) {
+    public int compareTo(final Node o) {
         return Integer.valueOf(this.steps).compareTo(Integer.valueOf(o.steps));
     }
 
@@ -237,14 +237,14 @@ public class Node implements Comparable<Node> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Node other = (Node) obj;
+        final Node other = (Node) obj;
         if (elevator != other.elevator)
             return false;
         if (!Arrays.equals(floors, other.floors))

@@ -1,4 +1,4 @@
-package nl.michielgraat.adventofcode2017.day7;
+package nl.michielgraat.adventofcode2017.day07;
 
 import java.util.ArrayList;
 import java.util.List;

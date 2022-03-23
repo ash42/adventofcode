@@ -15,8 +15,6 @@ public class KnotHash {
 
     private String sInput;
 
-    private KnotHash() {}    
-
     public KnotHash(String sInput) {
         this.sInput = sInput;
     }

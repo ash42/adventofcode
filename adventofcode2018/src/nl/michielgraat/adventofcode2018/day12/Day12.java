@@ -27,6 +27,21 @@ public class Day12 {
         return notes;
     }
 
+    private int calculateScore(int n, List<String> lines) {
+        List<String> state = getInitialState(lines);
+        Map<String, String> notes = getNotes(lines);
+        int zeroIdx = 0;
+        int score = 0;
+        for (int i = 1; i <= n; i++) {
+            Generation g = new Generation(state, notes, zeroIdx);
+            g.grow();
+            zeroIdx = g.getZeroIdx();
+            state = g.getOutput();
+            score = g.getScore();
+        }
+        return score;
+    }
+
     private String runPart2(List<String> lines) {
         // Bit of cheating here. If you analyse the scores for, for instance, the first
         // 20000 iterations, you will see that every 1000 iterations the first part of
@@ -41,18 +56,7 @@ public class Day12 {
     }
 
     private int runPart1(List<String> lines) {
-        List<String> state = getInitialState(lines);
-        Map<String, String> notes = getNotes(lines);
-        int zeroIdx = 0;
-        Generation g = null;
-        for (int i = 1; i <= 20; i++) {
-            g = new Generation(state, notes, zeroIdx);
-            g.grow();
-            zeroIdx = g.getZeroIdx();
-            state = g.getOutput();
-        }
-
-        return g.getScore();
+        return calculateScore(20, lines);
     }
 
     public static void main(final String[] args) {

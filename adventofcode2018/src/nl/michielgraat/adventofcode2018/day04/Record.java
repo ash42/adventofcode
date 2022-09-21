@@ -16,15 +16,15 @@ public class Record implements Comparable<Record> {
     boolean fallsAsleep;
     boolean wakesUp;
 
-    public Record(String line) throws ParseException {
+    public Record(final String line) throws ParseException {
         parse(line);
     }
 
     private void parse(String line) throws ParseException {
-        String d = line.substring(0, line.indexOf("]") + 1);
-        SimpleDateFormat f = new SimpleDateFormat("[yyyy-MM-dd HH:mm]");
-        java.util.Date date = f.parse(d);
-        Calendar c = Calendar.getInstance();
+        final String d = line.substring(0, line.indexOf("]") + 1);
+        final SimpleDateFormat f = new SimpleDateFormat("[yyyy-MM-dd HH:mm]");
+        final java.util.Date date = f.parse(d);
+        final Calendar c = Calendar.getInstance();
         c.setTime(date);
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
@@ -43,7 +43,7 @@ public class Record implements Comparable<Record> {
     }
 
     @Override
-    public int compareTo(Record o) {
+    public int compareTo(final Record o) {
         if (year != o.year) {
             if (year < o.year) {
                 return -1;
@@ -83,20 +83,20 @@ public class Record implements Comparable<Record> {
     }
 
     @Override
-	public String toString() {
-		String month = (this.month < 10) ? "0" + this.month : String.valueOf(this.month);
-		String day = (this.day < 10) ? "0" + this.day : String.valueOf(this.day);
-		String hour = (this.hour < 10) ? "0" + this.hour : String.valueOf(this.hour);
-		String minute = (this.minute < 10) ? "0" + this.minute : String.valueOf(this.minute);
-		String result = "[" + year + "-" + month + "-" + day + " " + hour + ":" + minute + "] ";
-		if (guard != -1) {
-			result += "Guard #" + guard + " begins shift";
-		} else if (fallsAsleep) {
-			result += "falls asleep";
-		} else if (wakesUp) {
-			result += "wakes up";
-		}
-		return result;
-	}
+    public String toString() {
+        final String month = (this.month < 10) ? "0" + this.month : String.valueOf(this.month);
+        final String day = (this.day < 10) ? "0" + this.day : String.valueOf(this.day);
+        final String hour = (this.hour < 10) ? "0" + this.hour : String.valueOf(this.hour);
+        final String minute = (this.minute < 10) ? "0" + this.minute : String.valueOf(this.minute);
+        String result = "[" + year + "-" + month + "-" + day + " " + hour + ":" + minute + "] ";
+        if (guard != -1) {
+            result += "Guard #" + guard + " begins shift";
+        } else if (fallsAsleep) {
+            result += "falls asleep";
+        } else if (wakesUp) {
+            result += "wakes up";
+        }
+        return result;
+    }
 
 }

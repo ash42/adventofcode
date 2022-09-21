@@ -10,33 +10,33 @@ public class Day08 {
     private static final String FILENAME = "day08.txt";
     private int totalSum = 0;
 
-    private int buildTree(List<Integer> input, Node current, int idx) {
-        int children = input.get(idx++);
-        int metadata = input.get(idx++);
+    private int buildTree(final List<Integer> input, final Node current, int idx) {
+        final int children = input.get(idx++);
+        final int metadata = input.get(idx++);
 
         for (int i = 0; i < children; i++) {
-            Node child = new Node();
+            final Node child = new Node();
             current.children.add(child);
             idx = buildTree(input, child, idx);
         }
         for (int i = 0; i < metadata; i++) {
-            int val = input.get(idx + i);
+            final int val = input.get(idx + i);
             current.metadata.add(val);
             totalSum += val;
         }
         return idx + metadata;
     }
 
-    private int runPart2(List<String> lines) {
-        List<Integer> input = Arrays.stream(lines.get(0).split(" ")).map(Integer::parseInt)
+    private int runPart2(final List<String> lines) {
+        final List<Integer> input = Arrays.stream(lines.get(0).split(" ")).map(Integer::parseInt)
                 .collect(Collectors.toList());
-        Node root = new Node();
+        final Node root = new Node();
         buildTree(input, root, 0);
         return root.getValue();
     }
 
-    private int runPart1(List<String> lines) {
-        List<Integer> input = Arrays.stream(lines.get(0).split(" ")).map(Integer::parseInt)
+    private int runPart1(final List<String> lines) {
+        final List<Integer> input = Arrays.stream(lines.get(0).split(" ")).map(Integer::parseInt)
                 .collect(Collectors.toList());
         buildTree(input, new Node(), 0);
         return totalSum;

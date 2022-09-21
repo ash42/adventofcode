@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sky {
-    private List<Point> points = new ArrayList<>();
+    private final List<Point> points = new ArrayList<>();
 
-    public Sky(List<String> lines) {
-        for (String line : lines) {
-            int x = Integer.parseInt(line.substring(line.indexOf("<") + 1, line.indexOf(",")).trim());
-            int y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(">")).trim());
-            int velX = Integer.parseInt(line.substring(line.lastIndexOf("<") + 1, line.lastIndexOf(",")).trim());
-            int velY = Integer.parseInt(line.substring(line.lastIndexOf(",") + 1, line.lastIndexOf(">")).trim());
-            Point p = new Point(x, y, velX, velY);
+    public Sky(final List<String> lines) {
+        for (final String line : lines) {
+            final int x = Integer.parseInt(line.substring(line.indexOf("<") + 1, line.indexOf(",")).trim());
+            final int y = Integer.parseInt(line.substring(line.indexOf(",") + 1, line.indexOf(">")).trim());
+            final int velX = Integer.parseInt(line.substring(line.lastIndexOf("<") + 1, line.lastIndexOf(",")).trim());
+            final int velY = Integer.parseInt(line.substring(line.lastIndexOf(",") + 1, line.lastIndexOf(">")).trim());
+            final Point p = new Point(x, y, velX, velY);
             points.add(p);
         }
     }
@@ -46,16 +46,16 @@ public class Sky {
     public String getMessage() {
         moveUntilMessageFound();
 
-        int minX = points.stream().map(Point::getX).mapToInt(x -> x).min().getAsInt();
-        int maxX = points.stream().map(Point::getX).mapToInt(x -> x).max().getAsInt();
-        int minY = points.stream().map(Point::getY).mapToInt(y -> y).min().getAsInt();
-        int maxY = points.stream().map(Point::getY).mapToInt(y -> y).max().getAsInt();
+        final int minX = points.stream().map(Point::getX).mapToInt(x -> x).min().getAsInt();
+        final int maxX = points.stream().map(Point::getX).mapToInt(x -> x).max().getAsInt();
+        final int minY = points.stream().map(Point::getY).mapToInt(y -> y).min().getAsInt();
+        final int maxY = points.stream().map(Point::getY).mapToInt(y -> y).max().getAsInt();
 
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         sb.append("\n\n");
         for (int y = minY; y <= maxY; y++) {
             for (int x = minX; x <= maxX; x++) {
-                Point p = new Point(x, y);
+                final Point p = new Point(x, y);
                 if (points.contains(p)) {
                     sb.append("#");
                 } else {
@@ -68,10 +68,10 @@ public class Sky {
     }
 
     private long size() {
-        int minX = points.stream().map(Point::getX).mapToInt(x -> x).min().getAsInt();
-        int maxX = points.stream().map(Point::getX).mapToInt(x -> x).max().getAsInt();
-        int minY = points.stream().map(Point::getY).mapToInt(y -> y).min().getAsInt();
-        int maxY = points.stream().map(Point::getY).mapToInt(y -> y).max().getAsInt();
+        final int minX = points.stream().map(Point::getX).mapToInt(x -> x).min().getAsInt();
+        final int maxX = points.stream().map(Point::getX).mapToInt(x -> x).max().getAsInt();
+        final int minY = points.stream().map(Point::getY).mapToInt(y -> y).min().getAsInt();
+        final int maxY = points.stream().map(Point::getY).mapToInt(y -> y).max().getAsInt();
         return (long) (maxX - minX) * (long) (maxY - minY);
     }
 }

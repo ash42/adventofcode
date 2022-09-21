@@ -5,21 +5,21 @@ import java.util.List;
 
 public class Day14 {
 
-    private int runPart2(String n) {
-        int nrOfDigits = n.length();
-        List<Integer> scores = new ArrayList<>();
+    private int runPart2(final String n) {
+        final int nrOfDigits = n.length();
+        final List<Integer> scores = new ArrayList<>();
         scores.add(3);
         scores.add(7);
         int idx1 = 0;
         int idx2 = 1;
-        StringBuilder lastDigits = new StringBuilder("37");
+        final StringBuilder lastDigits = new StringBuilder("37");
         while (true) {
-            int score1 = scores.get(idx1);
-            int score2 = scores.get(idx2);
-            int newScore = score1 + score2;
-            String[] sScore = String.valueOf(newScore).split("");
-            for (String s : sScore) {
-                int intToAdd = Integer.parseInt(s);
+            final int score1 = scores.get(idx1);
+            final int score2 = scores.get(idx2);
+            final int newScore = score1 + score2;
+            final String[] sScore = String.valueOf(newScore).split("");
+            for (final String s : sScore) {
+                final int intToAdd = Integer.parseInt(s);
                 scores.add(intToAdd);
                 if (lastDigits.length() >= nrOfDigits) {
                     lastDigits.delete(0, 1);
@@ -35,24 +35,24 @@ public class Day14 {
 
     }
 
-    private String runPart1(int n) {
-        List<Integer> scores = new ArrayList<>();
+    private String runPart1(final int n) {
+        final List<Integer> scores = new ArrayList<>();
         scores.add(3);
         scores.add(7);
         int idx1 = 0;
         int idx2 = 1;
         while (scores.size() < n + 10) {
-            int score1 = scores.get(idx1);
-            int score2 = scores.get(idx2);
-            int newScore = score1 + score2;
-            String[] sScore = String.valueOf(newScore).split("");
-            for (String s : sScore) {
+            final int score1 = scores.get(idx1);
+            final int score2 = scores.get(idx2);
+            final int newScore = score1 + score2;
+            final String[] sScore = String.valueOf(newScore).split("");
+            for (final String s : sScore) {
                 scores.add(Integer.parseInt(s));
             }
             idx1 = (idx1 + 1 + score1) % scores.size();
             idx2 = (idx2 + 1 + score2) % scores.size();
         }
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         for (int i = n; i < n + 10; i++) {
             sb.append(scores.get(i));
         }

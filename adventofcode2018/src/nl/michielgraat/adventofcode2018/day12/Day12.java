@@ -13,27 +13,27 @@ public class Day12 {
 
     int firstIdx = 0;
 
-    private List<String> getInitialState(List<String> lines) {
-        String[] input = lines.get(0).split(" ")[2].split("");
+    private List<String> getInitialState(final List<String> lines) {
+        final String[] input = lines.get(0).split(" ")[2].split("");
         return new ArrayList<>(Arrays.asList(input));
     }
 
-    private Map<String, String> getNotes(List<String> lines) {
-        Map<String, String> notes = new HashMap<>();
+    private Map<String, String> getNotes(final List<String> lines) {
+        final Map<String, String> notes = new HashMap<>();
         for (int i = 2; i < lines.size(); i++) {
-            String[] note = lines.get(i).split(" ");
+            final String[] note = lines.get(i).split(" ");
             notes.put(note[0], note[2]);
         }
         return notes;
     }
 
-    private int calculateScore(int n, List<String> lines) {
+    private int calculateScore(final int n, final List<String> lines) {
         List<String> state = getInitialState(lines);
-        Map<String, String> notes = getNotes(lines);
+        final Map<String, String> notes = getNotes(lines);
         int zeroIdx = 0;
         int score = 0;
         for (int i = 1; i <= n; i++) {
-            Generation g = new Generation(state, notes, zeroIdx);
+            final Generation g = new Generation(state, notes, zeroIdx);
             g.grow();
             zeroIdx = g.getZeroIdx();
             state = g.getOutput();
@@ -42,11 +42,11 @@ public class Day12 {
         return score;
     }
 
-    private String runPart2(List<String> lines) {
+    private String runPart2(final List<String> lines) {
         // Bit of cheating here. If you analyse the scores for, for instance, the first
         // 20000 iterations, you will see that every 1000 iterations the first part of
         // the score increases by 52. The second part always ends in 919.
-        long end = 50000000000L / 1000;
+        final long end = 50000000000L / 1000;
         long total = 0;
         for (int i = 1; i <= end; i++) {
             total += 52;
@@ -55,7 +55,7 @@ public class Day12 {
         return String.valueOf(total) + "919";
     }
 
-    private int runPart1(List<String> lines) {
+    private int runPart1(final List<String> lines) {
         return calculateScore(20, lines);
     }
 

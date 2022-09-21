@@ -13,12 +13,12 @@ public class Day11 {
     private static final int DIM = 300;
     private static final String FILENAME = "day11.txt";
 
-    private int[][] getGrid(int serialNr) {
-        int[][] grid = new int[DIM][DIM];
+    private int[][] getGrid(final int serialNr) {
+        final int[][] grid = new int[DIM][DIM];
         for (int y = 0; y < DIM; y++) {
             for (int x = 0; x < DIM; x++) {
                 int power = 0;
-                int rackId = x + 1 + 10;
+                final int rackId = x + 1 + 10;
                 power = rackId * (y + 1);
                 power += serialNr;
                 power *= rackId;
@@ -34,7 +34,7 @@ public class Day11 {
         return grid;
     }
 
-    private String getCoordinate(int[][] grid, int size) {
+    private String getCoordinate(final int[][] grid, final int size) {
         int maxX = 0;
         int maxY = 0;
         int max = 0;
@@ -56,14 +56,14 @@ public class Day11 {
         return maxX + "," + maxY + "," + size + ": " + max;
     }
 
-    private String runPart2(List<String> lines) {
-        int serialNr = Integer.parseInt(lines.get(0));
-        int[][] grid = getGrid(serialNr);
+    private String runPart2(final List<String> lines) {
+        final int serialNr = Integer.parseInt(lines.get(0));
+        final int[][] grid = getGrid(serialNr);
         int max = 0;
         String maxResult = "";
         for (int size = 1; size <= 300; size++) {
-            String result = getCoordinate(grid, size);
-            int total = Integer.parseInt(result.substring(result.indexOf(":") + 2));
+            final String result = getCoordinate(grid, size);
+            final int total = Integer.parseInt(result.substring(result.indexOf(":") + 2));
             if (total > max) {
                 max = total;
                 maxResult = result.substring(0, result.indexOf(":"));
@@ -72,10 +72,10 @@ public class Day11 {
         return maxResult;
     }
 
-    private String runPart1(List<String> lines) {
-        int serialNr = Integer.parseInt(lines.get(0));
-        int[][] grid = getGrid(serialNr);
-        String result = getCoordinate(grid, 3);
+    private String runPart1(final List<String> lines) {
+        final int serialNr = Integer.parseInt(lines.get(0));
+        final int[][] grid = getGrid(serialNr);
+        final String result = getCoordinate(grid, 3);
         return result.substring(0, result.lastIndexOf(","));
     }
 

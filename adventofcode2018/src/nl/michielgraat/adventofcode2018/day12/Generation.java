@@ -11,7 +11,7 @@ public class Generation {
     int zeroIdx;
     int score;
 
-    public Generation(List<String> input, Map<String, String> notes, int zeroIdx) {
+    public Generation(final List<String> input, final Map<String, String> notes, final int zeroIdx) {
         this.input = input;
         this.notes = notes;
         this.zeroIdx = zeroIdx;
@@ -29,7 +29,7 @@ public class Generation {
     public void grow() {
         output = new ArrayList<>();
         for (int i = -2; i < input.size() + 2; i++) {
-            StringBuilder noteSb = new StringBuilder();
+            final StringBuilder noteSb = new StringBuilder();
             for (int j = i - 2; j <= i + 2; j++) {
                 if (j < 0 || j >= input.size()) {
                     noteSb.append(".");
@@ -37,8 +37,8 @@ public class Generation {
                     noteSb.append(input.get(j));
                 }
             }
-            String note = noteSb.toString();
-            String result = notes.get(note);
+            final String note = noteSb.toString();
+            final String result = notes.get(note);
 
             if (i < 0 && (result.equals("#") || !output.isEmpty())) {
                 zeroIdx++;

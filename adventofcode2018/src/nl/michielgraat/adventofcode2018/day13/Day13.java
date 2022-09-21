@@ -9,13 +9,13 @@ import nl.michielgraat.adventofcode2018.FileReader;
 public class Day13 {
     private static final String FILENAME = "day13.txt";
 
-    private char[][] buildGrid(List<String> lines, List<Cart> carts) {
-        char[][] grid = new char[lines.get(0).length()][lines.size()];
+    private char[][] buildGrid(final List<String> lines, final List<Cart> carts) {
+        final char[][] grid = new char[lines.get(0).length()][lines.size()];
         int cartId = 0;
         for (int y = 0; y < lines.size(); y++) {
-            String line = lines.get(y);
+            final String line = lines.get(y);
             for (int x = 0; x < line.length(); x++) {
-                char c = line.charAt(x);
+                final char c = line.charAt(x);
                 if (c == '^') {
                     carts.add(new Cart(cartId++, x, y, Direction.UP));
                     grid[x][y] = 's';
@@ -37,12 +37,12 @@ public class Day13 {
         return grid;
     }
 
-    private String tick(List<Cart> carts, char[][] grid) {
+    private String tick(final List<Cart> carts, final char[][] grid) {
         String crash = null;
-        for (Cart c : carts) {
+        for (final Cart c : carts) {
             c.move(grid);
             if (crash == null) {
-                for (Cart c2 : carts) {
+                for (final Cart c2 : carts) {
                     if (!c.equals(c2) && c.x == c2.x && c.y == c2.y) {
                         crash = c.x + "," + c.y;
                     }
@@ -53,12 +53,12 @@ public class Day13 {
         return crash;
     }
 
-    private List<Cart> tickAndRemove(List<Cart> carts, char[][] grid) {
-        List<Cart> newCarts = new ArrayList<>();
-        for (Cart c : carts) {
+    private List<Cart> tickAndRemove(final List<Cart> carts, final char[][] grid) {
+        final List<Cart> newCarts = new ArrayList<>();
+        for (final Cart c : carts) {
             if (!c.toRemove) {
                 c.move(grid);
-                for (Cart c2 : carts) {
+                for (final Cart c2 : carts) {
                     if (!c.equals(c2) && c.x == c2.x && c.y == c2.y) {
                         c.setToRemove(true);
                         c2.setToRemove(true);
@@ -66,7 +66,7 @@ public class Day13 {
                 }
             }
         }
-        for (Cart c : carts) {
+        for (final Cart c : carts) {
             if (!c.isToRemove()) {
                 newCarts.add(c);
             }
@@ -75,18 +75,18 @@ public class Day13 {
         return newCarts;
     }
 
-    private String runPart2(List<String> lines) {
+    private String runPart2(final List<String> lines) {
         List<Cart> carts = new ArrayList<>();
-        char[][] grid = buildGrid(lines, carts);
+        final char[][] grid = buildGrid(lines, carts);
         while (carts.size() > 1) {
             carts = tickAndRemove(carts, grid);
         }
         return carts.get(0).x + "," + carts.get(0).y;
     }
 
-    private String runPart1(List<String> lines) {
-        List<Cart> carts = new ArrayList<>();
-        char[][] grid = buildGrid(lines, carts);
+    private String runPart1(final List<String> lines) {
+        final List<Cart> carts = new ArrayList<>();
+        final char[][] grid = buildGrid(lines, carts);
         String crash = null;
         while (crash == null) {
             crash = tick(carts, grid);

@@ -1,9 +1,9 @@
 package nl.michielgraat.adventofcode2018.day07;
 
 public class Node implements Comparable<Node> {
-    private char label;
+    private final char label;
 
-    Node(char label) {
+    Node(final char label) {
         this.label = label;
     }
 
@@ -16,7 +16,7 @@ public class Node implements Comparable<Node> {
     }
 
     @Override
-    public int compareTo(Node o) {
+    public int compareTo(final Node o) {
         return Character.compare(this.getLabel(), o.getLabel());
     }
 
@@ -29,14 +29,14 @@ public class Node implements Comparable<Node> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Node other = (Node) obj;
+        final Node other = (Node) obj;
         if (label != other.label)
             return false;
         return true;

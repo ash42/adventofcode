@@ -1,11 +1,11 @@
 package nl.michielgraat.adventofcode2018.day07;
 
 public class Worker {
-    private int nr;
+    private final int nr;
     private int secondsLeft;
     private Node node;
 
-    public Worker(int nr) {
+    public Worker(final int nr) {
         this.nr = nr;
     }
 
@@ -33,9 +33,9 @@ public class Worker {
 
     public Node getNode() {
         return node;
-    }    
+    }
 
-    public void setNode(Node node) {
+    public void setNode(final Node node) {
         this.node = node;
         if (node != null) {
             this.secondsLeft = node.getWorkLoad();

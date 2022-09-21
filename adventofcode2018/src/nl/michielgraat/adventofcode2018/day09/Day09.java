@@ -9,12 +9,12 @@ public class Day09 {
 
     private static final String FILENAME = "day09.txt";
 
-    private long getHighscore(int nrOfPlayers, int maxValue) {
-        Circle<Integer> circle = new Circle<>();
+    private long getHighscore(final int nrOfPlayers, final int maxValue) {
+        final Circle<Integer> circle = new Circle<>();
         circle.add(0);
-        long[] scores = new long[nrOfPlayers];
+        final long[] scores = new long[nrOfPlayers];
         for (int i = 1; i <= maxValue; i++) {
-            int curPlayer = i % nrOfPlayers;
+            final int curPlayer = i % nrOfPlayers;
             if (i % 23 == 0) {
                 scores[curPlayer] += i;
                 circle.rotate(-7);
@@ -27,15 +27,15 @@ public class Day09 {
         return Arrays.stream(scores).max().getAsLong();
     }
 
-    private long runPart2(List<String> lines) {
-        int nrOfPlayers = Integer.parseInt(lines.get(0).split(" ")[0]);
-        int maxValue = Integer.parseInt(lines.get(0).split(" ")[6]) * 100;
+    private long runPart2(final List<String> lines) {
+        final int nrOfPlayers = Integer.parseInt(lines.get(0).split(" ")[0]);
+        final int maxValue = Integer.parseInt(lines.get(0).split(" ")[6]) * 100;
         return getHighscore(nrOfPlayers, maxValue);
     }
 
-    private long runPart1(List<String> lines) {
-        int nrOfPlayers = Integer.parseInt(lines.get(0).split(" ")[0]);
-        int maxValue = Integer.parseInt(lines.get(0).split(" ")[6]);
+    private long runPart1(final List<String> lines) {
+        final int nrOfPlayers = Integer.parseInt(lines.get(0).split(" ")[0]);
+        final int maxValue = Integer.parseInt(lines.get(0).split(" ")[6]);
         return getHighscore(nrOfPlayers, maxValue);
     }
 

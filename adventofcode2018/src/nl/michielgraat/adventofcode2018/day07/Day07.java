@@ -11,12 +11,12 @@ public class Day07 {
 
     private static final String FILENAME = "day07.txt";
 
-    private Graph buildGraph(List<String> lines) {
-        Graph g = new Graph();
-        for (String line : lines) {
-            String[] words = line.split(" ");
-            String before = words[1];
-            String after = words[7];
+    private Graph buildGraph(final List<String> lines) {
+        final Graph g = new Graph();
+        for (final String line : lines) {
+            final String[] words = line.split(" ");
+            final String before = words[1];
+            final String after = words[7];
             g.addEdge(before.charAt(0), after.charAt(0));
         }
         return g;
@@ -32,15 +32,15 @@ public class Day07 {
      * @param g The graph to perform Kahn's algorithm on.
      * @return The sorted result as a String.
      */
-    private String kahn(Graph g) {
-        List<Character> s = new ArrayList<>();
-        List<Character> l = new ArrayList<>();
+    private String kahn(final Graph g) {
+        final List<Character> s = new ArrayList<>();
+        final List<Character> l = new ArrayList<>();
         s.addAll(g.getStart());
         while (!s.isEmpty()) {
-            char current = s.remove(0);
+            final char current = s.remove(0);
             l.add(current);
-            List<Node> connected = g.getConnectedNodes(current);
-            for (Node n : connected) {
+            final List<Node> connected = g.getConnectedNodes(current);
+            for (final Node n : connected) {
                 g.removeEdge(current, n.getLabel());
                 if (!g.hasIncomingEdges(n.getLabel())) {
                     s.add(n.getLabel());
@@ -57,8 +57,8 @@ public class Day07 {
      * @param nr The number of workers.
      * @return A list with the specified number of workers.
      */
-    private List<Worker> buildWorkerList(int nr) {
-        List<Worker> workers = new ArrayList<>();
+    private List<Worker> buildWorkerList(final int nr) {
+        final List<Worker> workers = new ArrayList<>();
         for (int i = 1; i <= nr; i++) {
             workers.add(new Worker(i));
         }
@@ -76,13 +76,14 @@ public class Day07 {
      * @param finishedNodes The finished nodes.
      * @param workList      The list of nodes which are ready to be worked on.
      */
-    private void handleFinishedWorkers(Graph graph, List<Worker> workers, List<Character> finishedNodes,
-            List<Node> workList) {
-        for (Worker w : workers) {
+    private void handleFinishedWorkers(final Graph graph, final List<Worker> workers,
+            final List<Character> finishedNodes,
+            final List<Node> workList) {
+        for (final Worker w : workers) {
             if (w.finished()) {
-                List<Node> connected = graph.getConnectedNodes(w.getNode().getLabel());
+                final List<Node> connected = graph.getConnectedNodes(w.getNode().getLabel());
                 finishedNodes.add(w.getNode().getLabel());
-                for (Node n : connected) {
+                for (final Node n : connected) {
                     graph.removeEdge(w.getNode().getLabel(), n.getLabel());
                     if (!graph.hasIncomingEdges(n.getLabel())) {
                         workList.add(n);
@@ -100,10 +101,10 @@ public class Day07 {
      * @param workers  The workers.
      * @param workList The list of nodes which are ready to be worked on.
      */
-    private void distributeWork(List<Worker> workers, List<Node> workList) {
-        for (Worker w : workers) {
+    private void distributeWork(final List<Worker> workers, final List<Node> workList) {
+        for (final Worker w : workers) {
             if (w.idle() && !workList.isEmpty()) {
-                Node current = workList.remove(0);
+                final Node current = workList.remove(0);
                 w.setNode(current);
             }
         }
@@ -115,32 +116,33 @@ public class Day07 {
      * @param graph The graph to work on.
      * @return The number of seconds needed wo work through the graph.
      */
-    private int getNumberOfSecondsNeeded(Graph graph) {
-        List<Worker> workers = buildWorkerList(5);
-        int nrOfNodes = graph.getNodeCount();
-        List<Character> finishedNodes = new ArrayList<>();
-        List<Node> workList = graph.getStartNodes();
+    private int getNumberOfSecondsNeeded(final Graph graph) {
+        final List<Worker> workers = buildWorkerList(5);
+        final int nrOfNodes = graph.getNodeCount();
+        final List<Character> finishedNodes = new ArrayList<>();
+        final List<Node> workList = graph.getStartNodes();
 
         int second = 0;
         while (finishedNodes.size() < nrOfNodes || workers.stream().anyMatch(w -> !w.idle())) {
-            //1. Distribute available work to idle workers (workers which do not have a node to work on)
+            // 1. Distribute available work to idle workers (workers which do not have a
+            // node to work on)
             distributeWork(workers, workList);
-            //2. Work.
+            // 2. Work.
             workers.forEach(Worker::work);
-            //3. Handle the finished workers.
+            // 3. Handle the finished workers.
             handleFinishedWorkers(graph, workers, finishedNodes, workList);
             second++;
         }
         return second;
     }
 
-    private int runPart2(List<String> lines) {
-        Graph graph = buildGraph(lines);
+    private int runPart2(final List<String> lines) {
+        final Graph graph = buildGraph(lines);
         return getNumberOfSecondsNeeded(graph);
     }
 
-    private String runPart1(List<String> lines) {
-        Graph g = buildGraph(lines);
+    private String runPart1(final List<String> lines) {
+        final Graph g = buildGraph(lines);
         return kahn(g);
     }
 

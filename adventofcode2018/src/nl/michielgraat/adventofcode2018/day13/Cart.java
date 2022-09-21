@@ -8,7 +8,7 @@ public class Cart implements Comparable<Cart> {
     int intersectionCntr = 0;
     boolean toRemove = false;
 
-    public Cart(int id, int x, int y, Direction direction) {
+    public Cart(final int id, final int x, final int y, final Direction direction) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -19,11 +19,11 @@ public class Cart implements Comparable<Cart> {
         return toRemove;
     }
 
-    public void setToRemove(boolean toRemove) {
+    public void setToRemove(final boolean toRemove) {
         this.toRemove = toRemove;
     }
 
-    public void move(char[][] grid) {
+    public void move(final char[][] grid) {
         if (direction == Direction.LEFT) {
             x--;
         } else if (direction == Direction.RIGHT) {
@@ -33,13 +33,13 @@ public class Cart implements Comparable<Cart> {
         } else if (direction == Direction.DOWN) {
             y++;
         }
-        char c = grid[x][y];
+        final char c = grid[x][y];
         if (c == '\\' || c == '/' || c == '+') {
             setNewDirection(c);
         }
     }
 
-    public void setNewDirection(char c) {
+    public void setNewDirection(final char c) {
         if (c == '\\') {
             handleLeftTurn(c);
         } else if (c == '/') {
@@ -75,7 +75,7 @@ public class Cart implements Comparable<Cart> {
         }
     }
 
-    private void handleRightTurn(char c) {
+    private void handleRightTurn(final char c) {
         if (direction == Direction.UP)
             direction = Direction.RIGHT;
         else if (direction == Direction.DOWN)
@@ -86,7 +86,7 @@ public class Cart implements Comparable<Cart> {
             direction = Direction.DOWN;
     }
 
-    private void handleLeftTurn(char c) {
+    private void handleLeftTurn(final char c) {
         if (direction == Direction.UP)
             direction = Direction.LEFT;
         else if (direction == Direction.DOWN)
@@ -108,14 +108,14 @@ public class Cart implements Comparable<Cart> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Cart other = (Cart) obj;
+        final Cart other = (Cart) obj;
         if (id != other.id)
             return false;
         if (x != other.x)
@@ -126,7 +126,7 @@ public class Cart implements Comparable<Cart> {
     }
 
     @Override
-    public int compareTo(Cart o) {
+    public int compareTo(final Cart o) {
         if (this.x != o.x) {
             return Integer.compare(this.x, o.x);
         } else {

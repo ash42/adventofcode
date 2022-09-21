@@ -12,7 +12,7 @@ public class Node {
             return metadata.stream().mapToInt(m -> m).sum();
         } else {
             int sum = 0;
-            for (int m : metadata) {
+            for (final int m : metadata) {
                 if (m != 0 && m <= children.size()) {
                     sum += children.get(m - 1).getValue();
                 }

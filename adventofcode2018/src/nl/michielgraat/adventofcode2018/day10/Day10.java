@@ -8,15 +8,16 @@ public class Day10 {
 
     private static final String FILENAME = "day10.txt";
 
-    private int runPart2(List<String> lines) {
-        Sky sky = new Sky(lines);
+    private int runPart2(final List<String> lines) {
+        final Sky sky = new Sky(lines);
         return sky.moveUntilMessageFound();
     }
 
-    private String runPart1(List<String> lines) {
-        Sky sky = new Sky(lines);
+    private String runPart1(final List<String> lines) {
+        final Sky sky = new Sky(lines);
         return sky.getMessage();
     }
+
     public static void main(final String[] args) {
         final List<String> lines = FileReader.getStringList(FILENAME);
         long start = System.nanoTime();

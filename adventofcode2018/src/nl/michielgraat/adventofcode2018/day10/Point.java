@@ -6,14 +6,14 @@ public class Point {
     int velX;
     int velY;
 
-    public Point(int x, int y, int velX, int velY) {
+    public Point(final int x, final int y, final int velX, final int velY) {
         this.x = x;
         this.y = y;
         this.velX = velX;
         this.velY = velY;
     }
 
-    public Point(int x, int y) {
+    public Point(final int x, final int y) {
         this.x = x;
         this.y = y;
     }
@@ -59,14 +59,14 @@ public class Point {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Point other = (Point) obj;
+        final Point other = (Point) obj;
         if (x != other.x)
             return false;
         if (y != other.y)
@@ -74,5 +74,4 @@ public class Point {
         return true;
     }
 
-    
 }

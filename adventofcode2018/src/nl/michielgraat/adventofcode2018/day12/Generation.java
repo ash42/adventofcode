@@ -21,17 +21,17 @@ public class Generation {
         score = 0;
         for (int i = 0; i < output.size(); i++) {
             if (output.get(i).equals("#")) {
-                score += (i-zeroIdx);
+                score += (i - zeroIdx);
             }
         }
     }
 
     public void grow() {
         output = new ArrayList<>();
-        for (int i = -2; i < input.size()+2; i++) {
+        for (int i = -2; i < input.size() + 2; i++) {
             StringBuilder noteSb = new StringBuilder();
-            for (int j = i-2; j<=i+2; j++) {
-                if (j<0 || j >= input.size()) {
+            for (int j = i - 2; j <= i + 2; j++) {
+                if (j < 0 || j >= input.size()) {
                     noteSb.append(".");
                 } else {
                     noteSb.append(input.get(j));
@@ -43,7 +43,7 @@ public class Generation {
             if (i < 0 && (result.equals("#") || !output.isEmpty())) {
                 zeroIdx++;
                 output.add(result);
-            } else if (i>=0) {
+            } else if (i >= 0) {
                 output.add(result);
             }
         }

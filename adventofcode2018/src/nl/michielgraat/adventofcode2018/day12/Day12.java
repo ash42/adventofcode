@@ -28,12 +28,12 @@ public class Day12 {
     }
 
     private String runPart2(List<String> lines) {
-        //Bit of cheating here. If you analyse the scores for, for instance, the first
-        //20000 iterations, you will see that every 1000 iterations the first part of the 
-        //score increases by 52. The second part always ends in 919. 
-        long end = 50000000000L/1000;
+        // Bit of cheating here. If you analyse the scores for, for instance, the first
+        // 20000 iterations, you will see that every 1000 iterations the first part of
+        // the score increases by 52. The second part always ends in 919.
+        long end = 50000000000L / 1000;
         long total = 0;
-        for (int i = 1; i<=end; i++) {
+        for (int i = 1; i <= end; i++) {
             total += 52;
         }
 

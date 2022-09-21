@@ -1,6 +1,5 @@
 package nl.michielgraat.adventofcode2018.day09;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

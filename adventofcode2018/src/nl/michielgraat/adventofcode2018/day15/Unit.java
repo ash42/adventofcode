@@ -65,27 +65,18 @@ public class Unit implements Comparable<Unit> {
     private List<Point> getAdjacentSquares(final char[][] grid, final List<Unit> targets) {
         final List<Point> adjacent = new ArrayList<>();
         for (final Unit target : targets) {
-            // System.out.println("Trying to find adjacent squares to " + target);
             final int x = target.p.x;
             final int y = target.p.y;
             if (x - 1 >= 0 && grid[x - 1][y] == '.') {
-                // System.out.println("Found adjacent empty square at (" + (x-1) + "," + y +
-                // ")");
                 adjacent.add(new Point(x - 1, y));
             }
             if (x + 1 < grid.length && grid[x + 1][y] == '.') {
-                // System.out.println("Found adjacent empty square at (" + (x+1) + "," + y +
-                // ")");
                 adjacent.add(new Point(x + 1, y));
             }
             if (y - 1 >= 0 && grid[x][y - 1] == '.') {
-                // System.out.println("Found adjacent empty square at (" + x + "," + (y-1) +
-                // ")");
                 adjacent.add(new Point(x, y - 1));
             }
             if (y + 1 < grid[0].length && grid[x][y + 1] == '.') {
-                // System.out.println("Found adjacent empty square at (" + x + "," + (y+1) +
-                // ")");
                 adjacent.add(new Point(x, y + 1));
             }
         }
@@ -93,16 +84,13 @@ public class Unit implements Comparable<Unit> {
     }
 
     private void move(final char[][] grid, final List<Unit> targets) {
-        // System.out.println("Trying to move");
         if (inRange(targets).isEmpty()) {
-            // System.out.println("No targets directly in range");
             // Get list of all adjacent points to enemies
             final List<Point> adjacent = getAdjacentSquares(grid, targets);
             final Map<Point, Integer> adjToDistance = new TreeMap<>();
             // For every of these points, calculcate the distance to it
             for (final Point adj : adjacent) {
                 final int dist = dijkstra(this.p, adj, grid);
-                // System.out.println("Distance from " + this.p + " to " + adj + " = " + dist);
                 if (dist < Integer.MAX_VALUE) {
                     adjToDistance.put(adj, dist);
                 }
@@ -110,8 +98,6 @@ public class Unit implements Comparable<Unit> {
             if (!adjToDistance.isEmpty()) {
                 // Find the nearest adjacent-to-an-enemy point
                 final Point nearest = Collections.min(adjToDistance.entrySet(), Map.Entry.comparingByValue()).getKey();
-                // System.out.println("Nearest adjacent square to enemy for " + this + " is at "
-                // + nearest);
                 // Find which neighbour point of the current unit is closest to the nearest
                 // adjacent-to-an-enemy point...
                 final List<Point> neighbours = this.p.getNeighbours(grid);
@@ -124,12 +110,9 @@ public class Unit implements Comparable<Unit> {
                         minN = n;
                     }
                 }
-                // System.out.println("Nearest adjacent square to " + nearest + " is at " + minN
-                // + ", moving towards it");
                 // ...and move towards it.
                 this.p.x = minN.x;
                 this.p.y = minN.y;
-                // System.out.println("Now at " + this.p);
             }
         }
     }
@@ -140,22 +123,13 @@ public class Unit implements Comparable<Unit> {
      * @param targets List of possible targets
      */
     private void attack(final List<Unit> targets) {
-        // System.out.println("Trying to attack");
         final List<Unit> inRange = inRange(targets);
         if (!inRange.isEmpty()) {
-            // System.out.println("Found " + inRange.size() + " enemies in range");
             final int minHp = (inRange.size() > 1) ? inRange.stream().filter(i -> i.hitpoints > 0).mapToInt(i -> i.hitpoints)
                     .min().orElseThrow(NoSuchElementException::new) : inRange.get(0).hitpoints;
             final List<Unit> weakest = inRange.stream().filter(i -> i.hitpoints == minHp).collect(Collectors.toList());
-            // System.out.println(weakest.size() + " enemies have lowest hp of " + minHp);
             Collections.sort(weakest);
-            // System.out.println("Weakest enemies: ");
-            // for (Unit w : weakest) {
-            // System.out.println("- " + w + ", hp: " + w.hitpoints);
-            // }
             weakest.get(0).hitpoints -= this.attackPower;
-            // System.out.println("Hit " + weakest.get(0) + " for " + attackPower + "
-            // hitpoints, now at: " + weakest.get(0).hitpoints);
         }
     }
 
@@ -167,11 +141,9 @@ public class Unit implements Comparable<Unit> {
      * @return true if combat has ended (no more enemies), else false.
      */
     public boolean takeTurn(final char[][] grid, final List<Unit> units) {
-        // System.out.println("----> " + this + " taking its turn...");
         final Race enemy = (this.race == Race.ELF) ? Race.GOBLIN : Race.ELF;
         final List<Unit> targets = units.stream().filter(u -> u.race == enemy).filter(u -> u.hitpoints > 0)
                 .collect(Collectors.toList());
-        // System.out.println("Found " + targets.size() + " targets before actions");
         if (targets.isEmpty()) {
             return true;
         }

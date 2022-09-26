@@ -12,7 +12,6 @@ import nl.michielgraat.adventofcode2018.FileReader;
 public class Day16 {
 
     private static final String FILENAME = "day16.txt";
-    private static final String FILENAME2 = "day16-2.txt";
 
     private int[] parseArray(final String s) {
         final String arrayString = s.substring(s.indexOf("[") + 1, s.indexOf("]"));
@@ -138,10 +137,13 @@ public class Day16 {
         return result;
     }
 
-    private int runPart2(final List<String> lines, final List<String> lines2) {
+    private int runPart2(final List<String> lines) {
         final Map<Integer, List<Opcode>> nrToOpcode = new HashMap<>();
         // Build mapping from number to all possible opcodes.
         for (int i = 0; i < lines.size(); i += 4) {
+            if (lines.get(i).isEmpty() && lines.get(i+1).isEmpty()) {
+                break;
+            }
             final String before = lines.get(i);
             final String instruction = lines.get(i + 1);
             final String after = lines.get(i + 2);
@@ -152,9 +154,15 @@ public class Day16 {
         final Map<Integer, List<Opcode>> mapping = calculateOpcodes(nrToOpcode);
         // Run the program.
         int[] registers = new int[4];
-        for (final String line : lines2) {
-            final Instruction ins = new Instruction(line);
-            registers = ins.run(registers, mapping);
+        boolean prevBefore = false;
+        for (int i = 0; i < lines.size(); i++) {
+            String line = lines.get(i);
+            if (line.isEmpty() || line.startsWith("Before") || line.startsWith("After") || prevBefore) {
+                prevBefore = line.startsWith("Before");
+            } else {
+                final Instruction ins = new Instruction(line);
+                registers = ins.run(registers, mapping);
+            }
         }
         return registers[0];
     }
@@ -162,6 +170,9 @@ public class Day16 {
     private int runPart1(final List<String> lines) {
         int total = 0;
         for (int i = 0; i < lines.size(); i += 4) {
+            if (lines.get(i).isEmpty() && lines.get(i+1).isEmpty()) {
+                break;
+            }
             final String before = lines.get(i);
             final String instruction = lines.get(i + 1);
             final String after = lines.get(i + 2);
@@ -176,12 +187,11 @@ public class Day16 {
 
     public static void main(final String[] args) {
         final List<String> lines = FileReader.getStringList(FILENAME);
-        final List<String> lines2 = FileReader.getStringList(FILENAME2);
         long start = System.nanoTime();
         System.out.println("Answer to part 1: " + new Day16().runPart1(lines));
         System.out.println("Took: " + (System.nanoTime() - start) / 1000000 + " ms");
         start = System.nanoTime();
-        System.out.println("Answer to part 2: " + new Day16().runPart2(lines, lines2));
+        System.out.println("Answer to part 2: " + new Day16().runPart2(lines));
         System.out.println("Took: " + (System.nanoTime() - start) / 1000000 + " ms");
     }
 

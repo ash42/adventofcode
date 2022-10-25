@@ -9,7 +9,7 @@ public class Day19 {
     private static final String FILENAME = "day19.txt";
 
     /**
-     * So let's reverse engineer this thing. Basically it does a double four loop
+     * So let's reverse engineer this thing. Basically it does a double for loop
      * with two registers (r2 and r5), both until the value in r4 (10551326). Every
      * time their product is equal to r4, add the value of r2 to r0. So, what the
      * program is doing is adding the values of the factors of r4 to r0. So let's

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Day14 {
 
-    private int runPart2(final String n) {
+    public int runPart2(final String n) {
         final int nrOfDigits = n.length();
         final List<Integer> scores = new ArrayList<>();
         scores.add(3);
@@ -35,7 +35,7 @@ public class Day14 {
 
     }
 
-    private String runPart1(final int n) {
+    public String runPart1(final int n) {
         final List<Integer> scores = new ArrayList<>();
         scores.add(3);
         scores.add(7);

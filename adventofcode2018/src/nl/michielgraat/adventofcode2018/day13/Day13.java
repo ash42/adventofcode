@@ -75,7 +75,7 @@ public class Day13 {
         return newCarts;
     }
 
-    private String runPart2(final List<String> lines) {
+    public String runPart2(final List<String> lines) {
         List<Cart> carts = new ArrayList<>();
         final char[][] grid = buildGrid(lines, carts);
         while (carts.size() > 1) {
@@ -84,7 +84,7 @@ public class Day13 {
         return carts.get(0).x + "," + carts.get(0).y;
     }
 
-    private String runPart1(final List<String> lines) {
+    public String runPart1(final List<String> lines) {
         final List<Cart> carts = new ArrayList<>();
         final char[][] grid = buildGrid(lines, carts);
         String crash = null;

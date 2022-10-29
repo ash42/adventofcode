@@ -79,7 +79,7 @@ public class Day19 {
      * @param lines
      * @return
      */
-    private long runPart2(final List<String> lines) {
+    public long runPart2(final List<String> lines) {
         final int r4 = 10551326;
         int r0 = 0;
         for (int r2 = 1; r2 <= Math.sqrt(r4); r2++) {
@@ -95,7 +95,7 @@ public class Day19 {
         return r0;
     }
 
-    private long runPart1(final List<String> lines) {
+    public long runPart1(final List<String> lines) {
         final Program p = new Program(lines);
         return p.run();
     }

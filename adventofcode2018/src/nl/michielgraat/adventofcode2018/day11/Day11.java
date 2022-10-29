@@ -56,7 +56,7 @@ public class Day11 {
         return maxX + "," + maxY + "," + size + ": " + max;
     }
 
-    private String runPart2(final List<String> lines) {
+    public String runPart2(final List<String> lines) {
         final int serialNr = Integer.parseInt(lines.get(0));
         final int[][] grid = getGrid(serialNr);
         int max = 0;
@@ -72,7 +72,7 @@ public class Day11 {
         return maxResult;
     }
 
-    private String runPart1(final List<String> lines) {
+    public String runPart1(final List<String> lines) {
         final int serialNr = Integer.parseInt(lines.get(0));
         final int[][] grid = getGrid(serialNr);
         final String result = getCoordinate(grid, 3);

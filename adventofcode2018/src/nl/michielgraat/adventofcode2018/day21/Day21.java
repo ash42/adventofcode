@@ -51,11 +51,11 @@ public class Day21 {
         }
     }
 
-    private int runPart2(final List<String> lines) {
+    public int runPart2(final List<String> lines) {
         return getResult(false);
     }
 
-    private long runPart1(final List<String> lines) {
+    public long runPart1(final List<String> lines) {
         return getResult(true);
 
     }

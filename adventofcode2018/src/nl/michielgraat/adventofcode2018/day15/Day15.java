@@ -55,7 +55,7 @@ public class Day15 {
         return newGrid;
     }
 
-    private int runPart2(final List<String> lines) {
+    public int runPart2(final List<String> lines) {
         boolean found = false;
         int attackPower = 4;
         int totalHp = 0;
@@ -92,7 +92,7 @@ public class Day15 {
         return (rounds - 1) * totalHp;
     }
 
-    private int runPart1(final List<String> lines) {
+    public int runPart1(final List<String> lines) {
         char[][] grid = parseGrid(lines);
         List<Unit> units = getUnits(grid, 3);
         Collections.sort(units);

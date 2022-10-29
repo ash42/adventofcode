@@ -27,7 +27,7 @@ public class Day08 {
         return idx + metadata;
     }
 
-    private int runPart2(final List<String> lines) {
+    public int runPart2(final List<String> lines) {
         final List<Integer> input = Arrays.stream(lines.get(0).split(" ")).map(Integer::parseInt)
                 .collect(Collectors.toList());
         final Node root = new Node();
@@ -35,7 +35,7 @@ public class Day08 {
         return root.getValue();
     }
 
-    private int runPart1(final List<String> lines) {
+    public int runPart1(final List<String> lines) {
         final List<Integer> input = Arrays.stream(lines.get(0).split(" ")).map(Integer::parseInt)
                 .collect(Collectors.toList());
         buildTree(input, new Node(), 0);

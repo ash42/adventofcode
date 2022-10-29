@@ -160,7 +160,7 @@ public class Day18 {
         return cycle;
     }
 
-    private int runPart2(final List<String> lines) {
+    public int runPart2(final List<String> lines) {
         final char[][] grid = getGrid(lines);
         final List<Value> values = buildValueList(grid, 1000); // 1000 should be enough to find a cycle
         final List<Integer> cycle = findCycle(values);
@@ -173,7 +173,7 @@ public class Day18 {
         return cycle.get(valToFetch);
     }
 
-    private int runPart1(final List<String> lines) {
+    public int runPart1(final List<String> lines) {
         char[][] grid = getGrid(lines);
         for (int min = 1; min <= 10; min++) {
             grid = runMinute(grid);

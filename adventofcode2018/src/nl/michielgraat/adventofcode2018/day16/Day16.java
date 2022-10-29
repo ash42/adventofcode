@@ -137,7 +137,7 @@ public class Day16 {
         return result;
     }
 
-    private int runPart2(final List<String> lines) {
+    public int runPart2(final List<String> lines) {
         final Map<Integer, List<Opcode>> nrToOpcode = new HashMap<>();
         // Build mapping from number to all possible opcodes.
         for (int i = 0; i < lines.size(); i += 4) {
@@ -167,7 +167,7 @@ public class Day16 {
         return registers[0];
     }
 
-    private int runPart1(final List<String> lines) {
+    public int runPart1(final List<String> lines) {
         int total = 0;
         for (int i = 0; i < lines.size(); i += 4) {
             if (lines.get(i).isEmpty() && lines.get(i+1).isEmpty()) {

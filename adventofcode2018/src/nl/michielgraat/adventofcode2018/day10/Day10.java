@@ -8,12 +8,12 @@ public class Day10 {
 
     private static final String FILENAME = "day10.txt";
 
-    private int runPart2(final List<String> lines) {
+    public int runPart2(final List<String> lines) {
         final Sky sky = new Sky(lines);
         return sky.moveUntilMessageFound();
     }
 
-    private String runPart1(final List<String> lines) {
+    public String runPart1(final List<String> lines) {
         final Sky sky = new Sky(lines);
         return sky.getMessage();
     }

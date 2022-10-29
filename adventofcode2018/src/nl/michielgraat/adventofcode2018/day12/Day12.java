@@ -42,7 +42,7 @@ public class Day12 {
         return score;
     }
 
-    private String runPart2(final List<String> lines) {
+    public String runPart2(final List<String> lines) {
         // Bit of cheating here. If you analyse the scores for, for instance, the first
         // 20000 iterations, you will see that every 1000 iterations the first part of
         // the score increases by 52. The second part always ends in 919.
@@ -55,7 +55,7 @@ public class Day12 {
         return String.valueOf(total) + "919";
     }
 
-    private int runPart1(final List<String> lines) {
+    public int runPart1(final List<String> lines) {
         return calculateScore(20, lines);
     }
 

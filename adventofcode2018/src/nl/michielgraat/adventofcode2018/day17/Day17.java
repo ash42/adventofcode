@@ -197,11 +197,11 @@ public class Day17 {
         return part1 ? getAllWater(grid, minY) : getRetainedWater(grid, minY);
     }
 
-    private int runPart2(final List<String> lines) {
+    public int runPart2(final List<String> lines) {
         return getAnswer(lines, false);
     }
 
-    private int runPart1(final List<String> lines) {
+    public int runPart1(final List<String> lines) {
         return getAnswer(lines, true);
     }
 

@@ -7,7 +7,7 @@ import nl.michielgraat.adventofcode2018.FileReader;
 public class Day22 {
     private static final String FILENAME = "day22.txt";
 
-    private int runPart2(final List<String> lines) {
+    public int runPart2(final List<String> lines) {
         final int depth = Integer.parseInt(lines.get(0).split(" ")[1]);
         final int targetX = Integer.parseInt(lines.get(1).split(" ")[1].split(",")[0]);
         final int targetY = Integer.parseInt(lines.get(1).split(" ")[1].split(",")[1]);
@@ -15,7 +15,7 @@ public class Day22 {
         return cave.getShortestRoute();
     }
 
-    private int runPart1(final List<String> lines) {
+    public int runPart1(final List<String> lines) {
         final int depth = Integer.parseInt(lines.get(0).split(" ")[1]);
         final int targetX = Integer.parseInt(lines.get(1).split(" ")[1].split(",")[0]);
         final int targetY = Integer.parseInt(lines.get(1).split(" ")[1].split(",")[1]);

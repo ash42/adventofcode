@@ -52,11 +52,11 @@ public class Day20 {
         return rooms;
     }
 
-    private long runPart2(final List<String> lines) {
+    public long runPart2(final List<String> lines) {
         return getRooms(lines.get(0)).stream().filter(r -> r.distance >= 1000).count();
     }
 
-    private int runPart1(final List<String> lines) {
+    public int runPart1(final List<String> lines) {
         return getRooms(lines.get(0)).stream().mapToInt(r -> r.distance).max().getAsInt();
     }
 

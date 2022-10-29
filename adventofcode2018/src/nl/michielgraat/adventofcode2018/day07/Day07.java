@@ -136,12 +136,12 @@ public class Day07 {
         return second;
     }
 
-    private int runPart2(final List<String> lines) {
+    public int runPart2(final List<String> lines) {
         final Graph graph = buildGraph(lines);
         return getNumberOfSecondsNeeded(graph);
     }
 
-    private String runPart1(final List<String> lines) {
+    public String runPart1(final List<String> lines) {
         final Graph g = buildGraph(lines);
         return kahn(g);
     }

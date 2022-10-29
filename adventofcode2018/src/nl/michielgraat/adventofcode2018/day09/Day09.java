@@ -27,13 +27,13 @@ public class Day09 {
         return Arrays.stream(scores).max().getAsLong();
     }
 
-    private long runPart2(final List<String> lines) {
+    public long runPart2(final List<String> lines) {
         final int nrOfPlayers = Integer.parseInt(lines.get(0).split(" ")[0]);
         final int maxValue = Integer.parseInt(lines.get(0).split(" ")[6]) * 100;
         return getHighscore(nrOfPlayers, maxValue);
     }
 
-    private long runPart1(final List<String> lines) {
+    public long runPart1(final List<String> lines) {
         final int nrOfPlayers = Integer.parseInt(lines.get(0).split(" ")[0]);
         final int maxValue = Integer.parseInt(lines.get(0).split(" ")[6]);
         return getHighscore(nrOfPlayers, maxValue);

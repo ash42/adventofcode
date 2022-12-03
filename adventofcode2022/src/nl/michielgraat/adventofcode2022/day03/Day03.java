@@ -16,14 +16,8 @@ public class Day03 extends AocSolver {
 
     private char findDuplicate(final String first, final String second, final String third) {
         for (final char current : first.toCharArray()) {
-            if (second.indexOf(current) != -1) {
-                if (third != null) {
-                    if (third.indexOf(current) != -1) {
-                        return current;
-                    }
-                } else {
-                    return current;
-                }
+            if (second.indexOf(current) != -1 && (third == null || third.indexOf(current) != -1)) {
+                return current;
             }
         }
         throw new IllegalArgumentException("No shared item type found for input");

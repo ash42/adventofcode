@@ -8,15 +8,12 @@ import nl.michielgraat.adventofcode2022.AocSolver;
 
 public class Day06 extends AocSolver {
 
-    private static final int PACKET_MARKER_SIZE = 4;
-    private static final int MESSAGE_MARKER_SIZE = 14;
-
     protected Day06(final String filename) {
         super(filename);
     }
 
     private int getMarkerPosition(final String buffer, final boolean part1) {
-        final int markerSize = part1 ? PACKET_MARKER_SIZE : MESSAGE_MARKER_SIZE;
+        final int markerSize = part1 ? 4 : 14;
         for (int i = 0; i < buffer.length() - markerSize; i++) {
             final Set<Character> letters = new HashSet<>();
             for (int j = i; j < i + markerSize; j++) {

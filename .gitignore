@@ -1,4 +1,5 @@
 **/bin/
+**/resources/
 *.class
 **/.classpath
 **/.project

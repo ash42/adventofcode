@@ -64,7 +64,7 @@ public class Day12 extends AocSolver {
     protected String runPart2(final List<String> input) {
         final List<Square> squares = getSquares(input);
         final List<Square> startSquares = squares.stream().filter(s -> s.getHeight() == 'a').toList();
-        final Square end = squares.stream().filter(s -> s.isEnd()).findFirst()
+        final Square end = squares.stream().filter(Square::isEnd).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No end square found"));
         int minSteps = Integer.MAX_VALUE;
         for (final Square start : startSquares) {
@@ -77,9 +77,9 @@ public class Day12 extends AocSolver {
     @Override
     protected String runPart1(final List<String> input) {
         final List<Square> squares = getSquares(input);
-        final Square start = squares.stream().filter(s -> s.isStart()).findFirst()
+        final Square start = squares.stream().filter(Square::isStart).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No start square found"));
-        final Square end = squares.stream().filter(s -> s.isEnd()).findFirst()
+        final Square end = squares.stream().filter(Square::isEnd).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No end square found"));
         return String.valueOf(dijkstra(start, end, squares));
     }

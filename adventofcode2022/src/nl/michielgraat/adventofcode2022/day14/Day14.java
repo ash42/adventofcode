@@ -6,11 +6,15 @@ import java.util.List;
 import nl.michielgraat.adventofcode2022.AocSolver;
 
 public class Day14 extends AocSolver {
-
+    
     private static final char AIR = '.';
     private static final char ROCK = '#';
     private static final char SAND = 'o';
     private static final char START = '+';
+    
+    protected Day14(final String filename) {
+        super(filename);
+    }
 
     private int getMaxY(final char[][] grid) {
         int maxY = 0;
@@ -83,10 +87,6 @@ public class Day14 extends AocSolver {
         // If at (500,0) we reached the source, there is no more room to pour more sand,
         // stop pouring. Else continue.
         return !(x == 500 && y == 0);
-    }
-
-    protected Day14(final String filename) {
-        super(filename);
     }
 
     @Override

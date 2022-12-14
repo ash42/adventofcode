@@ -16,11 +16,11 @@ public class Day12 extends AocSolver {
         super(filename);
     }
 
-    private int dijkstra(final Square start, final Square end, final List<Square> squares) {
+    private int dijkstra(final List<Square> start, final Square end, final List<Square> squares) {
         final PriorityQueue<Square> queue = new PriorityQueue<>();
-        queue.offer(start);
+        queue.addAll(start);
         final Map<Square, Integer> distances = new HashMap<>();
-        distances.put(start, 0);
+        start.forEach(s -> distances.put(s, 0));
         while (!queue.isEmpty()) {
             final Square current = queue.poll();
             final int dist = distances.get(current);
@@ -66,22 +66,17 @@ public class Day12 extends AocSolver {
         final List<Square> startSquares = squares.stream().filter(s -> s.getHeight() == 'a').toList();
         final Square end = squares.stream().filter(Square::isEnd).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No end square found"));
-        int minSteps = Integer.MAX_VALUE;
-        for (final Square start : startSquares) {
-            final int dist = dijkstra(start, end, squares);
-            minSteps = Math.min(dist, minSteps);
-        }
-        return String.valueOf(minSteps);
+        final int dist = dijkstra(startSquares, end, squares);
+        return String.valueOf(dist);
     }
 
     @Override
     protected String runPart1(final List<String> input) {
         final List<Square> squares = getSquares(input);
-        final Square start = squares.stream().filter(Square::isStart).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No start square found"));
+        final List<Square> startSquares = squares.stream().filter(Square::isStart).toList();
         final Square end = squares.stream().filter(Square::isEnd).findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("No end square found"));
-        return String.valueOf(dijkstra(start, end, squares));
+        return String.valueOf(dijkstra(startSquares, end, squares));
     }
 
     public static void main(final String... args) {

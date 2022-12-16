@@ -59,7 +59,6 @@ public class Day16 extends AocSolver {
             Collections.sort(opened);
             int val = calcPressure(start, minute + 1, pressure, opened, valves);
             opened.remove(start);
-            Collections.sort(opened);
             cache.put(state, val);
             max = val;
         }

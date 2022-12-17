@@ -4,29 +4,29 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Valve implements Comparable<Valve> {
-    private String name;
+    private final String name;
     private int flowRate;
 
-    private Set<String> neighbourNames = new HashSet<>();
-    
-    public Valve (String name, int flowRate) {
+    private final Set<String> neighbourNames = new HashSet<>();
+
+    public Valve(final String name, final int flowRate) {
         this.name = name;
         this.flowRate = flowRate;
     }
 
-    public void addNeighbourName(String neighbourName) {
+    public void addNeighbourName(final String neighbourName) {
         neighbourNames.add(neighbourName);
     }
 
     public String getName() {
         return this.name;
     }
-    
+
     public int getFlowRate() {
         return this.flowRate;
     }
 
-    public void setFlowRate(int flowRate) {
+    public void setFlowRate(final int flowRate) {
         this.flowRate = flowRate;
     }
 
@@ -43,14 +43,14 @@ public class Valve implements Comparable<Valve> {
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Valve other = (Valve) obj;
+        final Valve other = (Valve) obj;
         if (name == null) {
             if (other.name != null)
                 return false;
@@ -65,7 +65,7 @@ public class Valve implements Comparable<Valve> {
     }
 
     @Override
-    public int compareTo(Valve o) {
-        return Integer.compare(this.flowRate,o.flowRate);
+    public int compareTo(final Valve o) {
+        return Integer.compare(this.flowRate, o.flowRate);
     }
 }

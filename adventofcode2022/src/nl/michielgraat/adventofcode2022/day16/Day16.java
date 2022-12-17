@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,25 +15,25 @@ public class Day16 extends AocSolver {
 
     private Map<State, Integer> cache = new HashMap<>();
 
-    protected Day16(String filename) {
+    protected Day16(final String filename) {
         super(filename);
     }
 
     private List<Valve> parseValves(final List<String> input) {
-        List<Valve> valves = new ArrayList<>();
+        final List<Valve> valves = new ArrayList<>();
         final Pattern namePattern = Pattern.compile("([A-Z]{2})");
         final Pattern flowPattern = Pattern.compile("\\d+");
-        for (String line : input) {
-            Matcher flowMatcher = flowPattern.matcher(line);
+        for (final String line : input) {
+            final Matcher flowMatcher = flowPattern.matcher(line);
             flowMatcher.find();
-            int flow = Integer.parseInt(flowMatcher.group());
+            final int flow = Integer.parseInt(flowMatcher.group());
 
-            Matcher nameMatcher = namePattern.matcher(line);
+            final Matcher nameMatcher = namePattern.matcher(line);
             nameMatcher.find();
-            String name = nameMatcher.group();
-            Valve valve = new Valve(name, flow);
+            final String name = nameMatcher.group();
+            final Valve valve = new Valve(name, flow);
             while (nameMatcher.find()) {
-                String neighbourName = nameMatcher.group();
+                final String neighbourName = nameMatcher.group();
                 valve.addNeighbourName(neighbourName);
             }
             valves.add(valve);
@@ -42,12 +41,13 @@ public class Day16 extends AocSolver {
         return valves;
     }
 
-    public int calcPressure(Valve start, int minute, int pressure, List<Valve> opened, List<Valve> valves) {
-        pressure += opened.stream().mapToInt(Valve::getFlowRate).sum();
-        if (minute == 30) {
-            return pressure;
+    public int calcPressure(final Valve start, final int minute, final List<Valve> opened, final List<Valve> valves, final int nrOfOtherPlayers) {
+        if (minute == 0) {
+            final Valve aa = valves.stream().filter(f -> f.getName().equals("AA")).findFirst()
+                    .orElseThrow(NoSuchElementException::new);
+            return nrOfOtherPlayers > 0 ? calcPressure(aa, 26, opened, valves, nrOfOtherPlayers - 1) : 0;
         }
-        State state = new State(start, minute, opened);
+        final State state = new State(start, minute, opened, nrOfOtherPlayers);
         if (cache.keySet().contains(state)) {
             return cache.get(state);
         }
@@ -57,38 +57,42 @@ public class Day16 extends AocSolver {
             opened.add(start);
             // Make sure the opened valves are sorted, to make the cache work
             Collections.sort(opened);
-            int val = calcPressure(start, minute + 1, pressure, opened, valves);
+            final int val = (minute - 1) * start.getFlowRate()
+                    + calcPressure(start, minute - 1, opened, valves, nrOfOtherPlayers);
             opened.remove(start);
-            cache.put(state, val);
             max = val;
         }
 
-        for (String n : start.getNeighbourNames()) {
-            Valve neighbour = valves.stream().filter(v -> v.getName().equals(n)).findFirst()
+        for (final String n : start.getNeighbourNames()) {
+            final Valve neighbour = valves.stream().filter(v -> v.getName().equals(n)).findFirst()
                     .orElseThrow(NoSuchElementException::new);
-            int val = calcPressure(neighbour, minute + 1, pressure, opened, valves);
-            cache.put(state, val);
-            max = Math.max(max, val);
+            max = Math.max(max, calcPressure(neighbour, minute - 1, opened, valves, nrOfOtherPlayers));
         }
+        cache.put(state, max);
+
         return max;
 
     }
 
     @Override
     protected String runPart2(final List<String> input) {
-        return "part 2";
+        final List<Valve> valves = parseValves(input);
+        final Valve start = valves.stream().filter(f -> f.getName().equals("AA")).findFirst()
+                .orElseThrow(NoSuchElementException::new);
+        cache = new HashMap<>();
+        return String.valueOf(calcPressure(start, 26, new ArrayList<>(), valves, 1));
     }
 
     @Override
     protected String runPart1(final List<String> input) {
-        List<Valve> valves = parseValves(input);
-        Valve start = valves.stream().filter(f -> f.getName().equals("AA")).findFirst()
+        final List<Valve> valves = parseValves(input);
+        final Valve start = valves.stream().filter(f -> f.getName().equals("AA")).findFirst()
                 .orElseThrow(NoSuchElementException::new);
         cache = new HashMap<>();
-        return String.valueOf(calcPressure(start, 1, 0, new ArrayList<>(), valves));
+        return String.valueOf(calcPressure(start, 30, new ArrayList<>(), valves, 0));
     }
 
-    public static void main(String... args) {
+    public static void main(final String... args) {
         new Day16("day16.txt");
     }
 }

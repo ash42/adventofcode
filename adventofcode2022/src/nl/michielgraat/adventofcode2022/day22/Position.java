@@ -1,6 +1,5 @@
 package nl.michielgraat.adventofcode2022.day22;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 

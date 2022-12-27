@@ -42,7 +42,7 @@ public class Day25 extends AocSolver {
 
     @Override
     protected String runPart2(final List<String> input) {
-        return "no part 2";
+        return "none";
     }
 
     @Override

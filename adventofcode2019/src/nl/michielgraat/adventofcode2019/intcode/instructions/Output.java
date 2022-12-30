@@ -1,27 +1,29 @@
 package nl.michielgraat.adventofcode2019.intcode.instructions;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 
-public class Halt extends Instruction {
+public class Output extends Instruction {
 
-    public Halt(final List<Integer> memory, final int ptr, final int modes) {
-        super(memory, ptr, modes);
+    public Output(final List<Integer> memory, final int ptr, final int modes, final Deque<Integer> input,
+            final Deque<Integer> output) {
+        super(memory, ptr, modes, input, output);
     }
 
     @Override
     public String getName() {
-        return "Halt";
+        return "Output";
     }
 
     @Override
     public int getOpcode() {
-        return 99;
+        return 4;
     }
 
     @Override
     public int getNrParameters() {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -31,16 +33,21 @@ public class Halt extends Instruction {
 
     @Override
     public int getOutputPosition() {
-        return 0;
+        return ptr + 1;
     }
 
     @Override
     public int getPtrIncrease() {
-        return 0;
+        return 2;
     }
 
     @Override
     public void execute() {
+        if (modes > 0) {
+            saveOutput(memory.get(ptr + 1));
+        } else {
+            saveOutput(memory.get(memory.get(ptr + 1)));
+        }
     }
 
 }

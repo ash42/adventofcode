@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Add extends Instruction {
 
-    public Add(final List<Integer> memory, final int ptr) {
-        super(memory, ptr);
+    public Add(final List<Integer> memory, final int ptr, final int modes) {
+        super(memory, ptr, modes);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class Add extends Instruction {
 
     @Override
     public List<Integer> getInputPositions() {
-        return memory.subList(ptr + 1, ptr + 3);
+        return memory.subList(ptr + 1, ptr + 4);
     }
 
     @Override
@@ -39,7 +39,16 @@ public class Add extends Instruction {
     }
 
     @Override
-    public int execute() {
-        return memory.get(memory.get(ptr + 1)) + memory.get(memory.get(ptr + 2));
+    public void execute() {
+        if (modes > -1) {
+            final int mode1 = modes % 10;
+            final int mode2 = (modes / 10) % 10;
+            final int var1 = mode1 == 0 ? memory.get(memory.get(ptr + 1)) : memory.get(ptr + 1);
+            final int var2 = mode2 == 0 ? memory.get(memory.get(ptr + 2)) : memory.get(ptr + 2);
+            memory.set(memory.get(getOutputPosition()), var1 + var2);
+        } else {
+            memory.set(memory.get(getOutputPosition()),
+                    memory.get(memory.get(ptr + 1)) + memory.get(memory.get(ptr + 2)));
+        }
     }
 }

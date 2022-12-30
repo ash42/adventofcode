@@ -1,17 +1,27 @@
 package nl.michielgraat.adventofcode2019.intcode;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import nl.michielgraat.adventofcode2019.intcode.instructions.Add;
+import nl.michielgraat.adventofcode2019.intcode.instructions.Equals;
 import nl.michielgraat.adventofcode2019.intcode.instructions.Halt;
+import nl.michielgraat.adventofcode2019.intcode.instructions.Input;
 import nl.michielgraat.adventofcode2019.intcode.instructions.Instruction;
+import nl.michielgraat.adventofcode2019.intcode.instructions.JumpIfFalse;
+import nl.michielgraat.adventofcode2019.intcode.instructions.JumpIfTrue;
+import nl.michielgraat.adventofcode2019.intcode.instructions.LessThan;
 import nl.michielgraat.adventofcode2019.intcode.instructions.Multiply;
+import nl.michielgraat.adventofcode2019.intcode.instructions.Output;
 
 public class IntcodeComputer {
     private final List<Integer> program;
     private List<Integer> memory;
+    private final Deque<Integer> input;
+    private final Deque<Integer> output;
     private int ptr = 0;
 
     public IntcodeComputer(final List<String> input) {
@@ -19,26 +29,47 @@ public class IntcodeComputer {
         this.program = Stream.of(programString.split(",")).map(String::trim).map(Integer::parseInt).toList();
         this.memory = Stream.of(programString.split(",")).map(String::trim).map(Integer::parseInt)
                 .collect(Collectors.toList());
+        this.input = new ArrayDeque<>();
+        this.output = new ArrayDeque<>();
         ptr = 0;
     }
 
-    private Instruction getInstruction(final int ptr) {
-        switch (program.get(ptr)) {
+    private Instruction getInstruction(final int opcode, final int modes) {
+        switch (opcode) {
             case 1:
-                return new Add(memory, ptr);
+                return new Add(memory, ptr, modes);
             case 2:
-                return new Multiply(memory, ptr);
+                return new Multiply(memory, ptr, modes);
+            case 3:
+                return new Input(memory, ptr, modes, input);
+            case 4:
+                return new Output(memory, ptr, modes, input, output);
+            case 5:
+                return new JumpIfTrue(memory, ptr, modes);
+            case 6:
+                return new JumpIfFalse(memory, ptr, modes);
+            case 7:
+                return new LessThan(memory, ptr, modes);
+            case 8:
+                return new Equals(memory, ptr, modes);
             case 99:
-                return new Halt(memory, ptr);
+                return new Halt(memory, ptr, modes);
             default:
-                throw new IllegalArgumentException("Unknown opcode: [" + program.get(ptr) + "]");
+                throw new IllegalArgumentException("Unknown opcode: [" + opcode + "]");
         }
     }
 
     public void run() {
-        while (program.get(ptr) != 99) {
-            final Instruction i = getInstruction(ptr);
-            memory.set(memory.get(i.getOutputPosition()), i.execute());
+        int current = 0;
+        while ((current = memory.get(ptr)) != 99) {
+            int opcode = current;
+            int modes = -1;
+            if (opcode >= 100) {
+                opcode = current % 100;
+                modes = current / 100;
+            }
+            final Instruction i = getInstruction(opcode, modes);
+            i.execute();
             ptr += i.getPtrIncrease();
         }
     }
@@ -49,10 +80,18 @@ public class IntcodeComputer {
     }
 
     public int getValueAtAddress(final int address) {
-        return memory.get(address);
+        return this.memory.get(address);
     }
 
     public void setValueAtAddress(final int address, final int value) {
         this.memory.set(address, value);
+    }
+
+    public void addInput(final int nr) {
+        this.input.push(nr);
+    }
+
+    public int readOutput() {
+        return this.output.pop();
     }
 }

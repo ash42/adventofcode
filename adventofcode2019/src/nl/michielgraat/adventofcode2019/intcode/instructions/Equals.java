@@ -2,20 +2,20 @@ package nl.michielgraat.adventofcode2019.intcode.instructions;
 
 import java.util.List;
 
-public class Multiply extends Instruction {
+public class Equals extends Instruction {
 
-    public Multiply(final List<Integer> memory, final int ptr, final int modes) {
+    public Equals(final List<Integer> memory, final int ptr, final int modes) {
         super(memory, ptr, modes);
     }
 
     @Override
     public String getName() {
-        return "Multiply";
+        return "Equals";
     }
 
     @Override
     public int getOpcode() {
-        return 2;
+        return 8;
     }
 
     @Override
@@ -45,10 +45,10 @@ public class Multiply extends Instruction {
             final int mode2 = (modes / 10) % 10;
             final int var1 = mode1 == 0 ? memory.get(memory.get(ptr + 1)) : memory.get(ptr + 1);
             final int var2 = mode2 == 0 ? memory.get(memory.get(ptr + 2)) : memory.get(ptr + 2);
-            memory.set(memory.get(getOutputPosition()), var1 * var2);
+            memory.set(memory.get(getOutputPosition()), var1 == var2 ? 1 : 0);
         } else {
             memory.set(memory.get(getOutputPosition()),
-                    memory.get(memory.get(ptr + 1)) * memory.get(memory.get(ptr + 2)));
+                    memory.get(memory.get(ptr + 1)).intValue() == memory.get(memory.get(ptr + 2).intValue()) ? 1 : 0);
         }
     }
 

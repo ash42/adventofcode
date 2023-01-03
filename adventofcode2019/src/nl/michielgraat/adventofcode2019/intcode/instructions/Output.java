@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Output extends Instruction {
 
-    public Output(final List<Integer> memory, final int ptr, final int modes, final Deque<Integer> input,
-            final Deque<Integer> output) {
+    public Output(final List<Long> memory, final int ptr, final int modes, final Deque<Long> input,
+            final Deque<Long> output) {
         super(memory, ptr, modes, input, output);
     }
 
@@ -27,7 +27,7 @@ public class Output extends Instruction {
     }
 
     @Override
-    public List<Integer> getInputPositions() {
+    public List<Long> getInputPositions() {
         return new ArrayList<>();
     }
 
@@ -46,7 +46,7 @@ public class Output extends Instruction {
         if (modes > 0) {
             saveOutput(memory.get(ptr + 1));
         } else {
-            saveOutput(memory.get(memory.get(ptr + 1)));
+            saveOutput(memory.get(memory.get(ptr + 1).intValue()));
         }
     }
 

@@ -5,14 +5,14 @@ import java.util.List;
 
 public abstract class Instruction {
 
-    List<Integer> memory;
+    List<Long> memory;
     int ptr;
     int modes;
-    Deque<Integer> input;
-    Deque<Integer> output;
+    Deque<Long> input;
+    Deque<Long> output;
 
-    Instruction(final List<Integer> memory, final int ptr, final int modes, final Deque<Integer> input,
-            final Deque<Integer> output) {
+    Instruction(final List<Long> memory, final int ptr, final int modes, final Deque<Long> input,
+            final Deque<Long> output) {
         this.memory = memory;
         this.ptr = ptr;
         this.modes = modes;
@@ -20,24 +20,28 @@ public abstract class Instruction {
         this.output = output;
     }
 
-    Instruction(final List<Integer> memory, final int ptr, final int modes, final Deque<Integer> input) {
+    Instruction(final List<Long> memory, final int ptr, final int modes, final Deque<Long> input) {
         this.memory = memory;
         this.ptr = ptr;
         this.modes = modes;
         this.input = input;
     }
 
-    Instruction(final List<Integer> memory, final int ptr, final int modes) {
+    Instruction(final List<Long> memory, final int ptr, final int modes) {
         this.memory = memory;
         this.modes = modes;
         this.ptr = ptr;
     }
 
-    int readInput() {
+    public boolean waitingForInput() {
+        return this instanceof Input && this.input.isEmpty();
+    }
+
+    long readInput() {
         return this.input.removeLast();
     }
 
-    void saveOutput(final int nr) {
+    void saveOutput(final long nr) {
         this.output.push(nr);
     }
 
@@ -47,7 +51,7 @@ public abstract class Instruction {
 
     public abstract int getNrParameters();
 
-    public abstract List<Integer> getInputPositions();
+    public abstract List<Long> getInputPositions();
 
     public abstract int getOutputPosition();
 

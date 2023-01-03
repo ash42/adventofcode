@@ -18,16 +18,18 @@ import nl.michielgraat.adventofcode2019.intcode.instructions.Multiply;
 import nl.michielgraat.adventofcode2019.intcode.instructions.Output;
 
 public class IntcodeComputer {
-    private final List<Integer> program;
-    private List<Integer> memory;
-    private final Deque<Integer> input;
-    private final Deque<Integer> output;
+    private final List<Long> program;
+    private List<Long> memory;
+    private Deque<Long> input;
+    private Deque<Long> output;
     private int ptr = 0;
+    private boolean waitingForInput = false;
+    private boolean halted = false;
 
     public IntcodeComputer(final List<String> input) {
         final String programString = input.get(0);
-        this.program = Stream.of(programString.split(",")).map(String::trim).map(Integer::parseInt).toList();
-        this.memory = Stream.of(programString.split(",")).map(String::trim).map(Integer::parseInt)
+        this.program = Stream.of(programString.split(",")).map(String::trim).map(Long::parseLong).toList();
+        this.memory = Stream.of(programString.split(",")).map(String::trim).map(Long::parseLong)
                 .collect(Collectors.toList());
         this.input = new ArrayDeque<>();
         this.output = new ArrayDeque<>();
@@ -61,7 +63,9 @@ public class IntcodeComputer {
 
     public void run() {
         int current = 0;
-        while ((current = memory.get(ptr)) != 99) {
+        waitingForInput = false;
+        while (!waitingForInput && !halted) {
+            current = memory.get(ptr).intValue();
             int opcode = current;
             int modes = -1;
             if (opcode >= 100) {
@@ -69,29 +73,49 @@ public class IntcodeComputer {
                 modes = current / 100;
             }
             final Instruction i = getInstruction(opcode, modes);
-            i.execute();
-            ptr += i.getPtrIncrease();
+            if (!(i instanceof Halt)) {
+                waitingForInput = i.waitingForInput();
+                if (!waitingForInput) {
+                    waitingForInput = false;
+                    i.execute();
+                    ptr += i.getPtrIncrease();
+                }
+            } else {
+                halted = true;
+            }
         }
     }
 
     public void reset() {
         this.memory = this.program.stream().collect(Collectors.toList());
         this.ptr = 0;
+        this.input = new ArrayDeque<>();
+        this.output = new ArrayDeque<>();
+        this.halted = false;
+        this.waitingForInput = false;
     }
 
-    public int getValueAtAddress(final int address) {
+    public long getValueAtAddress(final int address) {
         return this.memory.get(address);
     }
 
-    public void setValueAtAddress(final int address, final int value) {
+    public void setValueAtAddress(final int address, final long value) {
         this.memory.set(address, value);
     }
 
-    public void addInput(final int nr) {
+    public void addInput(final long nr) {
         this.input.push(nr);
     }
 
-    public int readOutput() {
+    public long readOutput() {
         return this.output.pop();
+    }
+
+    public boolean isHalted() {
+        return this.halted;
+    }
+
+    public boolean isWaitingForInput() {
+        return this.waitingForInput;
     }
 }

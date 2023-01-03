@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Input extends Instruction {
 
-    public Input(final List<Integer> memory, final int ptr, final int modes, final Deque<Integer> input) {
+    public Input(final List<Long> memory, final int ptr, final int modes, final Deque<Long> input) {
         super(memory, ptr, modes, input);
     }
 
@@ -25,7 +25,7 @@ public class Input extends Instruction {
     }
 
     @Override
-    public List<Integer> getInputPositions() {
+    public List<Long> getInputPositions() {
         return memory.subList(ptr + 1, ptr + 2);
     }
 
@@ -41,7 +41,7 @@ public class Input extends Instruction {
 
     @Override
     public void execute() {
-        memory.set(memory.get(ptr + 1), readInput());
+        memory.set(memory.get(ptr + 1).intValue(), readInput());
     }
 
 }

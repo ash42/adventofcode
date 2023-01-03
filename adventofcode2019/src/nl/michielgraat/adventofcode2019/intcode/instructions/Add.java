@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Add extends Instruction {
 
-    public Add(final List<Integer> memory, final int ptr, final int modes) {
+    public Add(final List<Long> memory, final int ptr, final int modes) {
         super(memory, ptr, modes);
     }
 
@@ -24,7 +24,7 @@ public class Add extends Instruction {
     }
 
     @Override
-    public List<Integer> getInputPositions() {
+    public List<Long> getInputPositions() {
         return memory.subList(ptr + 1, ptr + 4);
     }
 
@@ -43,12 +43,12 @@ public class Add extends Instruction {
         if (modes > -1) {
             final int mode1 = modes % 10;
             final int mode2 = (modes / 10) % 10;
-            final int var1 = mode1 == 0 ? memory.get(memory.get(ptr + 1)) : memory.get(ptr + 1);
-            final int var2 = mode2 == 0 ? memory.get(memory.get(ptr + 2)) : memory.get(ptr + 2);
-            memory.set(memory.get(getOutputPosition()), var1 + var2);
+            final long var1 = mode1 == 0 ? memory.get(memory.get(ptr + 1).intValue()) : memory.get(ptr + 1);
+            final long var2 = mode2 == 0 ? memory.get(memory.get(ptr + 2).intValue()) : memory.get(ptr + 2);
+            memory.set(memory.get(getOutputPosition()).intValue(), var1 + var2);
         } else {
-            memory.set(memory.get(getOutputPosition()),
-                    memory.get(memory.get(ptr + 1)) + memory.get(memory.get(ptr + 2)));
+            memory.set(memory.get(getOutputPosition()).intValue(),
+                    memory.get(memory.get(ptr + 1).intValue()) + memory.get(memory.get(ptr + 2).intValue()));
         }
     }
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Halt extends Instruction {
 
-    public Halt(final List<Integer> memory, final int ptr, final int modes) {
+    public Halt(final List<Long> memory, final int ptr, final int modes) {
         super(memory, ptr, modes);
     }
 
@@ -25,7 +25,7 @@ public class Halt extends Instruction {
     }
 
     @Override
-    public List<Integer> getInputPositions() {
+    public List<Long> getInputPositions() {
         return new ArrayList<>();
     }
 

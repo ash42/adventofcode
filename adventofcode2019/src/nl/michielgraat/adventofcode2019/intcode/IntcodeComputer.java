@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import nl.michielgraat.adventofcode2019.intcode.instructions.Add;
+import nl.michielgraat.adventofcode2019.intcode.instructions.AdjustRelativeBase;
 import nl.michielgraat.adventofcode2019.intcode.instructions.Equals;
 import nl.michielgraat.adventofcode2019.intcode.instructions.Halt;
 import nl.michielgraat.adventofcode2019.intcode.instructions.Input;
@@ -25,37 +26,36 @@ public class IntcodeComputer {
     private int ptr = 0;
     private boolean waitingForInput = false;
     private boolean halted = false;
+    private RelativeBase relativeBase = new RelativeBase();
 
     public IntcodeComputer(final List<String> input) {
         final String programString = input.get(0);
         this.program = Stream.of(programString.split(",")).map(String::trim).map(Long::parseLong).toList();
-        this.memory = Stream.of(programString.split(",")).map(String::trim).map(Long::parseLong)
-                .collect(Collectors.toList());
-        this.input = new ArrayDeque<>();
-        this.output = new ArrayDeque<>();
-        ptr = 0;
+        reset();
     }
 
     private Instruction getInstruction(final int opcode, final int modes) {
         switch (opcode) {
             case 1:
-                return new Add(memory, ptr, modes);
+                return new Add(memory, ptr, modes, relativeBase);
             case 2:
-                return new Multiply(memory, ptr, modes);
+                return new Multiply(memory, ptr, modes, relativeBase);
             case 3:
-                return new Input(memory, ptr, modes, input);
+                return new Input(memory, ptr, modes, relativeBase, input);
             case 4:
-                return new Output(memory, ptr, modes, input, output);
+                return new Output(memory, ptr, modes, relativeBase, input, output);
             case 5:
-                return new JumpIfTrue(memory, ptr, modes);
+                return new JumpIfTrue(memory, ptr, modes, relativeBase);
             case 6:
-                return new JumpIfFalse(memory, ptr, modes);
+                return new JumpIfFalse(memory, ptr, modes, relativeBase);
             case 7:
-                return new LessThan(memory, ptr, modes);
+                return new LessThan(memory, ptr, modes, relativeBase);
             case 8:
-                return new Equals(memory, ptr, modes);
+                return new Equals(memory, ptr, modes, relativeBase);
+            case 9:
+                return new AdjustRelativeBase(memory, ptr, modes, relativeBase);
             case 99:
-                return new Halt(memory, ptr, modes);
+                return new Halt(memory, ptr, modes, relativeBase);
             default:
                 throw new IllegalArgumentException("Unknown opcode: [" + opcode + "]");
         }
@@ -88,11 +88,20 @@ public class IntcodeComputer {
 
     public void reset() {
         this.memory = this.program.stream().collect(Collectors.toList());
+        // Initially set memory size to 10 times program size
+        increaseMemoryTo(memory.size() * 10);
         this.ptr = 0;
         this.input = new ArrayDeque<>();
         this.output = new ArrayDeque<>();
         this.halted = false;
         this.waitingForInput = false;
+        this.relativeBase = new RelativeBase();
+    }
+
+    private void increaseMemoryTo(final int address) {
+        while (memory.size() < address) {
+            memory.add(0L);
+        }
     }
 
     public long getValueAtAddress(final int address) {
@@ -109,6 +118,15 @@ public class IntcodeComputer {
 
     public long readOutput() {
         return this.output.pop();
+    }
+
+    public String printAllOutput() {
+        final StringBuilder sb = new StringBuilder();
+        while (!this.output.isEmpty()) {
+            sb.append(this.output.removeLast());
+            sb.append(" ");
+        }
+        return sb.toString();
     }
 
     public boolean isHalted() {

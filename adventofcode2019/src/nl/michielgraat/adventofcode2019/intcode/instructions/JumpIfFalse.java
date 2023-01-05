@@ -2,12 +2,14 @@ package nl.michielgraat.adventofcode2019.intcode.instructions;
 
 import java.util.List;
 
+import nl.michielgraat.adventofcode2019.intcode.RelativeBase;
+
 public class JumpIfFalse extends Instruction {
 
     int ptrIncr;
 
-    public JumpIfFalse(final List<Long> memory, final int ptr, final int modes) {
-        super(memory, ptr, modes);
+    public JumpIfFalse(final List<Long> memory, final int ptr, final int modes, final RelativeBase relativeBase) {
+        super(memory, ptr, modes, relativeBase);
         this.ptrIncr = 3;
     }
 
@@ -43,17 +45,8 @@ public class JumpIfFalse extends Instruction {
 
     @Override
     public void execute() {
-        long var1 = 0;
-        long var2 = 0;
-        if (modes > -1) {
-            final int mode1 = modes % 10;
-            final int mode2 = (modes / 10) % 10;
-            var1 = mode1 == 0 ? memory.get(memory.get(ptr + 1).intValue()) : memory.get(ptr + 1);
-            var2 = mode2 == 0 ? memory.get(memory.get(ptr + 2).intValue()) : memory.get(ptr + 2);
-        } else {
-            var1 = memory.get(memory.get(ptr + 1).intValue());
-            var2 = memory.get(memory.get(ptr + 2).intValue());
-        }
+        final long var1 = getVar(modes % 10, ptr + 1);
+        final long var2 = getVar((modes / 10) % 10, ptr + 2);
         if (var1 == 0) {
             ptrIncr = (int) var2 - ptr;
         }

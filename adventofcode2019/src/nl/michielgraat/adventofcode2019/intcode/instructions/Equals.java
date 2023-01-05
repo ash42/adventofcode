@@ -2,10 +2,12 @@ package nl.michielgraat.adventofcode2019.intcode.instructions;
 
 import java.util.List;
 
+import nl.michielgraat.adventofcode2019.intcode.RelativeBase;
+
 public class Equals extends Instruction {
 
-    public Equals(final List<Long> memory, final int ptr, final int modes) {
-        super(memory, ptr, modes);
+    public Equals(final List<Long> memory, final int ptr, final int modes, final RelativeBase relativeBase) {
+        super(memory, ptr, modes, relativeBase);
     }
 
     @Override
@@ -40,17 +42,9 @@ public class Equals extends Instruction {
 
     @Override
     public void execute() {
-        if (modes > -1) {
-            final int mode1 = modes % 10;
-            final int mode2 = (modes / 10) % 10;
-            final long var1 = mode1 == 0 ? memory.get(memory.get(ptr + 1).intValue()) : memory.get(ptr + 1);
-            final long var2 = mode2 == 0 ? memory.get(memory.get(ptr + 2).intValue()) : memory.get(ptr + 2);
-            memory.set(memory.get(getOutputPosition()).intValue(), var1 == var2 ? 1L : 0L);
-        } else {
-            memory.set(memory.get(getOutputPosition()).intValue(),
-                    memory.get(memory.get(ptr + 1).intValue()).equals(memory.get(memory.get(ptr + 2).intValue())) ? 1L
-                            : 0L);
-        }
+        final long var1 = getVar(modes % 10, ptr + 1);
+        final long var2 = getVar((modes / 10) % 10, ptr + 2);
+        writeToMemory(getOutputPosition((modes / 100) % 10),
+                var1 == var2 ? 1L : 0L);
     }
-
 }

@@ -3,10 +3,12 @@ package nl.michielgraat.adventofcode2019.intcode.instructions;
 import java.util.Deque;
 import java.util.List;
 
+import nl.michielgraat.adventofcode2019.intcode.RelativeBase;
+
 public class Input extends Instruction {
 
-    public Input(final List<Long> memory, final int ptr, final int modes, final Deque<Long> input) {
-        super(memory, ptr, modes, input);
+    public Input(final List<Long> memory, final int ptr, final int modes, final RelativeBase relativeBase, final Deque<Long> input) {
+        super(memory, ptr, modes, relativeBase, input);
     }
 
     @Override
@@ -41,7 +43,11 @@ public class Input extends Instruction {
 
     @Override
     public void execute() {
-        memory.set(memory.get(ptr + 1).intValue(), readInput());
+        final long input = memory.get(ptr+1);
+        final int mode1 = modes % 10;
+        final long value = readInput();
+        final int address = (int) (mode1 == RELATIVE_MODE ? input + relativeBase.intValue() : input);
+        writeToMemory(address, value);
     }
 
 }

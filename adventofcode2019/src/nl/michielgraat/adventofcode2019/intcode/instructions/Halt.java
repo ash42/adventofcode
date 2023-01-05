@@ -3,10 +3,12 @@ package nl.michielgraat.adventofcode2019.intcode.instructions;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.michielgraat.adventofcode2019.intcode.RelativeBase;
+
 public class Halt extends Instruction {
 
-    public Halt(final List<Long> memory, final int ptr, final int modes) {
-        super(memory, ptr, modes);
+    public Halt(final List<Long> memory, final int ptr, final int modes, final RelativeBase relativeBase) {
+        super(memory, ptr, modes, relativeBase);
     }
 
     @Override
@@ -41,6 +43,7 @@ public class Halt extends Instruction {
 
     @Override
     public void execute() {
+        // No execution necessary for halt.
     }
 
 }

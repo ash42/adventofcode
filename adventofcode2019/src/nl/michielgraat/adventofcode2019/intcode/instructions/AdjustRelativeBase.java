@@ -1,27 +1,24 @@
 package nl.michielgraat.adventofcode2019.intcode.instructions;
 
-import java.util.ArrayList;
-import java.util.Deque;
 import java.util.List;
 
 import nl.michielgraat.adventofcode2019.intcode.RelativeBase;
 
-public class Output extends Instruction {
+public class AdjustRelativeBase extends Instruction {
 
-    public Output(final List<Long> memory, final int ptr, final int modes, final RelativeBase relativeBase,
-            final Deque<Long> input,
-            final Deque<Long> output) {
-        super(memory, ptr, modes, relativeBase, input, output);
+    public AdjustRelativeBase(final List<Long> memory, final int ptr, final int modes,
+            final RelativeBase relativeBase) {
+        super(memory, ptr, modes, relativeBase);
     }
 
     @Override
     public String getName() {
-        return "Output";
+        return "Adjust relative base";
     }
 
     @Override
     public int getOpcode() {
-        return 4;
+        return 9;
     }
 
     @Override
@@ -31,12 +28,12 @@ public class Output extends Instruction {
 
     @Override
     public List<Long> getInputPositions() {
-        return new ArrayList<>();
+        return memory.subList(ptr + 1, ptr + 2);
     }
 
     @Override
     public int getOutputPosition() {
-        return ptr + 1;
+        return -1;
     }
 
     @Override
@@ -46,7 +43,6 @@ public class Output extends Instruction {
 
     @Override
     public void execute() {
-        saveOutput(getVar(modes % 10, ptr + 1));
+        relativeBase.increaseBy(getVar(modes % 10, ptr + 1));
     }
-
 }

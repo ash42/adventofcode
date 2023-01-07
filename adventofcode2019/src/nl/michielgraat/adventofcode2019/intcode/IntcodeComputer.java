@@ -88,8 +88,8 @@ public class IntcodeComputer {
 
     public void reset() {
         this.memory = this.program.stream().collect(Collectors.toList());
-        // Initially set memory size to 10 times program size
-        increaseMemoryTo(memory.size() * 10);
+        // Initially set memory size to 5 times program size
+        increaseMemoryTo(memory.size() * 5);
         this.ptr = 0;
         this.input = new ArrayDeque<>();
         this.output = new ArrayDeque<>();

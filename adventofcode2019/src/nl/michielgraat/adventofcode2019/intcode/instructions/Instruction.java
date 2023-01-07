@@ -82,7 +82,7 @@ public abstract class Instruction {
         if (isPositionMode(mode)) {
             return memory.get((int) param);
         } else {
-            return mode == IMMEDIATE_MODE ? param : memory.get((int) (param + relativeBase.intValue())).intValue();
+            return mode == IMMEDIATE_MODE ? param : memory.get((int) (param + relativeBase.intValue())).longValue();
         }
     }
 

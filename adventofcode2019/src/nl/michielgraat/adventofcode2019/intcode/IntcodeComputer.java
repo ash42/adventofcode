@@ -136,4 +136,8 @@ public class IntcodeComputer {
     public boolean isWaitingForInput() {
         return this.waitingForInput;
     }
+
+    public boolean hasOutput() {
+        return !this.output.isEmpty();
+    }
 }

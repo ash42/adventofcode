@@ -83,7 +83,7 @@ public class Day16 extends AocSolver {
         // is described in the puzzle itself, modulo 10.
         // Or - easier - the result for a position is the sum of itself and the result
         // of the position after it.
-        // As we are only interested in the the 8 digits after the offset, only
+        // As we are only interested in the 8 digits after the offset, only
         // calculate the result from the end of the signal backwards until the offset is
         // reached.
 

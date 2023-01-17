@@ -120,6 +120,10 @@ public class IntcodeComputer {
         return this.output.pop();
     }
 
+    public long readFirstOutput() {
+        return this.output.removeLast();
+    }
+
     public String printAllOutput() {
         final StringBuilder sb = new StringBuilder();
         while (!this.output.isEmpty()) {

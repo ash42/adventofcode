@@ -13,7 +13,7 @@ public class Day19 extends AocSolver {
     }
 
     private int getLeftEdge(final int y, final IntcodeComputer droneSystem) {
-        for (int x = 0;; x++) {
+        for (int x = (int) (0.75*y); x< 2*y; x++) {
             droneSystem.addInput(x);
             droneSystem.addInput(y);
             droneSystem.run();
@@ -23,6 +23,7 @@ public class Day19 extends AocSolver {
                 return x;
             }
         }
+        throw new NoSuchElementException("No left edge found for " + y);
     }
 
     private boolean inBeam(final int x, final int y, final IntcodeComputer droneSystem) {
@@ -52,7 +53,7 @@ public class Day19 extends AocSolver {
     @Override
     protected String runPart2(final List<String> input) {
         final IntcodeComputer droneSystem = new IntcodeComputer(input);
-        return String.valueOf(getClosestSquare(100, 800, droneSystem));
+        return String.valueOf(getClosestSquare(100, 500, droneSystem));
     }
 
     @Override
@@ -64,8 +65,7 @@ public class Day19 extends AocSolver {
                 droneSystem.addInput(x);
                 droneSystem.addInput(y);
                 droneSystem.run();
-                final long output = droneSystem.readOutput();
-                total += output;
+                total += droneSystem.readOutput();
                 droneSystem.reset();
             }
         }

@@ -53,7 +53,7 @@ public class Day19 extends AocSolver {
     @Override
     protected String runPart2(final List<String> input) {
         final IntcodeComputer droneSystem = new IntcodeComputer(input);
-        return String.valueOf(getClosestSquare(100, 500, droneSystem));
+        return String.valueOf(getClosestSquare(100, 100, droneSystem));
     }
 
     @Override

@@ -116,6 +116,22 @@ public class IntcodeComputer {
         this.input.push(nr);
     }
 
+    public void addAsciiInput(final String input) {
+        for (final char c : input.toCharArray()) {
+            this.input.push((long) c);
+        }
+        //Add new line
+        this.input.push(10L);
+    }
+
+    public String readAllOutputAscii() {
+        final StringBuilder sb = new StringBuilder();
+        while (!this.output.isEmpty()) {
+            sb.append((char) this.output.removeLast().longValue());
+        }
+        return sb.toString();
+    }
+
     public long readOutput() {
         return this.output.pop();
     }
@@ -124,7 +140,7 @@ public class IntcodeComputer {
         return this.output.removeLast();
     }
 
-    public String printAllOutput() {
+    public String readAllOutput() {
         final StringBuilder sb = new StringBuilder();
         while (!this.output.isEmpty()) {
             sb.append(this.output.removeLast());

@@ -40,11 +40,6 @@ class Game {
         parseInput(input);
     }
 
-    Game(int gameNr, List<Grab> grabs) {
-        this.gameNr = gameNr;
-        this.grabs = grabs;
-    }
-
     private void parseInput(String line) {
         this.gameNr = getGameNr(line);
         String[] grabs = line.substring(line.indexOf(":") + 2).split(";");

@@ -55,7 +55,7 @@ public class Day06 extends AocSolver {
         long waysToWin = 0;
         boolean isEvenTime = time % 2 == 0;
 
-        // We use a ceil div here for the cases where the current time is uneven. In
+        // We use a ceil div here for the cases where the current time is odd. In
         // that case you want to start at the high end to prevent counting times twice.
         for (long i = Math.ceilDiv(time, 2); i <= time; i++) {
             long curDistance = i * (time - i);

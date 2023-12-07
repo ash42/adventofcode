@@ -32,7 +32,7 @@ public class Hand implements Comparable<Hand> {
         if (jokerIsWildcard) {
             type = getHighestPossibleType();
         } else {
-            type = determineType(this.hand);
+            type = determineType();
         }
     }
 
@@ -64,12 +64,12 @@ public class Hand implements Comparable<Hand> {
                 return ONE_PAIR;
             }
         } else {
-            return determineType(hand);
+            return determineType();
         }
             
     }
 
-    private int determineType(String hand) {
+    private int determineType() {
         Map<Integer,Integer> cardToAmount = getCardToAmountMap();
         List<Integer> values = new ArrayList<>(cardToAmount.values());
         Collections.sort(values);

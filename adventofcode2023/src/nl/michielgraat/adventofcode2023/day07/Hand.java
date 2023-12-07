@@ -38,27 +38,25 @@ public class Hand implements Comparable<Hand> {
 
     private int getHighestPossibleType() {
         Map<Integer,Integer> cardToAmount = getCardToAmountMap();
-        List<Integer> values = new ArrayList<>(cardToAmount.values());
-        Collections.sort(values);
-
-        int nrJs = cardToAmount.containsKey(getCard('J')) ? cardToAmount.get(getCard('J')) : 0;
+        List<Integer> amounts = new ArrayList<>(cardToAmount.values());
+        int nrJs = cardToAmount.getOrDefault(getCard('J'), 0);
  
         if (nrJs == 4 || nrJs == 5) {
             return FIVE_OF_A_KIND;
         } else if (nrJs == 3) {
-            return values.size() == 2 ? FIVE_OF_A_KIND : FOUR_OF_A_KIND;
+            return amounts.size() == 2 ? FIVE_OF_A_KIND : FOUR_OF_A_KIND;
         } else if (nrJs == 2) {
-            return values.size() == 2 ? FIVE_OF_A_KIND : values.size() == 3 ? FOUR_OF_A_KIND : THREE_OF_A_KIND;
+            return amounts.size() == 2 ? FIVE_OF_A_KIND : amounts.size() == 3 ? FOUR_OF_A_KIND : THREE_OF_A_KIND;
         } else if (nrJs == 1) {
-            if (values.size() == 2) {
+            if (amounts.size() == 2) {
                 return FIVE_OF_A_KIND;
-            } else if (values.size() == 3) {
-                if (values.get(1) == 2) {
+            } else if (amounts.size() == 3) {
+                if (amounts.get(1) == 2) {
                     return FULL_HOUSE;
                 } else {
                     return FOUR_OF_A_KIND;
                 }
-            } else if (values.size() == 4) {
+            } else if (amounts.size() == 4) {
                 return THREE_OF_A_KIND;
             } else {
                 return ONE_PAIR;
@@ -71,23 +69,23 @@ public class Hand implements Comparable<Hand> {
 
     private int determineType() {
         Map<Integer,Integer> cardToAmount = getCardToAmountMap();
-        List<Integer> values = new ArrayList<>(cardToAmount.values());
-        Collections.sort(values);
-        if (values.size() == 1) {
+        List<Integer> amounts = new ArrayList<>(cardToAmount.values());
+        Collections.sort(amounts);
+        if (amounts.size() == 1) {
             return FIVE_OF_A_KIND;
-        } else if (values.size() == 2) {
-            if (values.get(0) == 1) {
+        } else if (amounts.size() == 2) {
+            if (amounts.get(0) == 1) {
                 return FOUR_OF_A_KIND;
             } else {
                 return FULL_HOUSE;
             }
-        } else if (values.size() == 3) {
-            if (values.get(2) == 3) {
+        } else if (amounts.size() == 3) {
+            if (amounts.get(2) == 3) {
                 return THREE_OF_A_KIND;
             } else {
                 return TWO_PAIR;
             }
-        } else if (values.size() == 4) {
+        } else if (amounts.size() == 4) {
             return ONE_PAIR;
         } else {
             return HIGH_CARD;

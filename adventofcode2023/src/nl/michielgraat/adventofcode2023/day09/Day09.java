@@ -1,6 +1,7 @@
 package nl.michielgraat.adventofcode2023.day09;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,23 +46,17 @@ public class Day09 extends AocSolver {
         }
     }
 
-    private int getPreviousNumber(List<Integer> sequence) {
-        List<Integer> differences = getDifferences(sequence);
-        if (differences.stream().anyMatch(x -> x != 0)) {
-            return sequence.get(0) - getPreviousNumber(differences);
-        } else {
-            return sequence.get(0);
-        }
-    }
-
     @Override
     protected String runPart2(final List<String> input) {
-        return String.valueOf(getSequences(input).stream().mapToInt(s -> getPreviousNumber(s)).sum());
+        List<List<Integer>> sequences = getSequences(input);
+        sequences.forEach(s -> Collections.reverse(s));
+        return String.valueOf(sequences.stream().mapToInt(s -> getNextNumber(s)).sum());
     }
 
     @Override
     protected String runPart1(final List<String> input) {
-        return String.valueOf(getSequences(input).stream().mapToInt(s -> getNextNumber(s)).sum());
+        List<List<Integer>> sequences = getSequences(input);
+        return String.valueOf(sequences.stream().mapToInt(s -> getNextNumber(s)).sum());
     }
 
     public static void main(String... args) {

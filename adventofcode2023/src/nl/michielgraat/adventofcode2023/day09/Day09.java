@@ -38,7 +38,7 @@ public class Day09 extends AocSolver {
 
     private int getNextNumber(List<Integer> sequence) {
         List<Integer> differences = getDifferences(sequence);
-        if (differences.stream().filter(x -> x != 0).findAny().isPresent()) {
+        if (differences.stream().anyMatch(x -> x != 0)) {
             return sequence.get(sequence.size() - 1) + getNextNumber(differences);
         } else {
             return sequence.get(sequence.size() - 1);
@@ -47,7 +47,7 @@ public class Day09 extends AocSolver {
 
     private int getPreviousNumber(List<Integer> sequence) {
         List<Integer> differences = getDifferences(sequence);
-        if (differences.stream().filter(x -> x != 0).findAny().isPresent()) {
+        if (differences.stream().anyMatch(x -> x != 0)) {
             return sequence.get(0) - getPreviousNumber(differences);
         } else {
             return sequence.get(0);

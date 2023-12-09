@@ -46,17 +46,19 @@ public class Day09 extends AocSolver {
         }
     }
 
+    private int getPreviousNumber(List<Integer> sequence) {
+        Collections.reverse(sequence);
+        return getNextNumber(sequence);
+    }
+
     @Override
     protected String runPart2(final List<String> input) {
-        List<List<Integer>> sequences = getSequences(input);
-        sequences.forEach(s -> Collections.reverse(s));
-        return String.valueOf(sequences.stream().mapToInt(s -> getNextNumber(s)).sum());
+        return String.valueOf(getSequences(input).stream().mapToInt(s -> getPreviousNumber(s)).sum());
     }
 
     @Override
     protected String runPart1(final List<String> input) {
-        List<List<Integer>> sequences = getSequences(input);
-        return String.valueOf(sequences.stream().mapToInt(s -> getNextNumber(s)).sum());
+        return String.valueOf(getSequences(input).stream().mapToInt(s -> getNextNumber(s)).sum());
     }
 
     public static void main(String... args) {

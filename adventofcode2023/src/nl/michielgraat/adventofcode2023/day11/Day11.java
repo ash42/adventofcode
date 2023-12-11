@@ -64,20 +64,19 @@ public class Day11 extends AocSolver {
         return total * (timesToExpand - 1);
     }
 
-    private List<GalaxyPair> getGalaxyPairs(List<Coordinate> galaxies, int timesToExpand, List<Integer> rowNrsToExpand,
+    private long getTotalDistance(List<Coordinate> galaxies, int timesToExpand, List<Integer> rowNrsToExpand,
             List<Integer> columnNrsToExpand) {
-        List<GalaxyPair> pairs = new ArrayList<>();
+        long total = 0;
         for (int g1Idx = 0; g1Idx < galaxies.size() - 1; g1Idx++) {
             for (int g2Idx = g1Idx + 1; g2Idx < galaxies.size(); g2Idx++) {
                 Coordinate first = galaxies.get(g1Idx);
                 Coordinate second = galaxies.get(g2Idx);
-                long distance = Math.abs(first.x() - second.x()) + Math.abs(first.y() - second.y())
+                total += Math.abs(first.x() - second.x()) + Math.abs(first.y() - second.y())
                         + getNrToAdd(first.x(), second.x(), columnNrsToExpand, timesToExpand)
                         + getNrToAdd(first.y(), second.y(), rowNrsToExpand, timesToExpand);
-                pairs.add(new GalaxyPair(first, second, distance));
             }
         }
-        return pairs;
+        return total;
     }
 
     @Override
@@ -85,8 +84,7 @@ public class Day11 extends AocSolver {
         List<Coordinate> galaxies = getCoordinates(input).stream().filter(Coordinate::isGalaxy).toList();
         List<Integer> rowNrsToExpand = getRowNrsToExpand(input);
         List<Integer> columnNrsToExpand = getColumnNrsToExpand(input);
-        List<GalaxyPair> pairs = getGalaxyPairs(galaxies, 1000000, rowNrsToExpand, columnNrsToExpand);
-        return String.valueOf(pairs.stream().mapToLong(GalaxyPair::distance).sum());
+        return String.valueOf(getTotalDistance(galaxies, 1000000, rowNrsToExpand, columnNrsToExpand));
     }
 
     @Override
@@ -94,8 +92,7 @@ public class Day11 extends AocSolver {
         List<Coordinate> galaxies = getCoordinates(input).stream().filter(Coordinate::isGalaxy).toList();
         List<Integer> rowNrsToExpand = getRowNrsToExpand(input);
         List<Integer> columnNrsToExpand = getColumnNrsToExpand(input);
-        List<GalaxyPair> pairs = getGalaxyPairs(galaxies, 2, rowNrsToExpand, columnNrsToExpand);
-        return String.valueOf(pairs.stream().mapToLong(GalaxyPair::distance).sum());
+        return String.valueOf(getTotalDistance(galaxies, 2, rowNrsToExpand, columnNrsToExpand));
     }
 
     public static void main(String... args) {

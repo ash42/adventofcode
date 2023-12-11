@@ -64,12 +64,13 @@ public class Day11 extends AocSolver {
         return total * (timesToExpand - 1);
     }
 
-    private List<GalaxyPair> getGalaxyPairs(List<Coordinate> galaxies, int timesToExpand, List<Integer> rowNrsToExpand, List<Integer> columnNrsToExpand) {
+    private List<GalaxyPair> getGalaxyPairs(List<Coordinate> galaxies, int timesToExpand, List<Integer> rowNrsToExpand,
+            List<Integer> columnNrsToExpand) {
         List<GalaxyPair> pairs = new ArrayList<>();
-        for (int galaxy1 = 0; galaxy1 < galaxies.size() - 1; galaxy1++) {
-            for (int galaxy2 = galaxy1 + 1; galaxy2 < galaxies.size(); galaxy2++) {
-                Coordinate first = galaxies.get(galaxy1);
-                Coordinate second = galaxies.get(galaxy2);
+        for (int g1Idx = 0; g1Idx < galaxies.size() - 1; g1Idx++) {
+            for (int g2Idx = g1Idx + 1; g2Idx < galaxies.size(); g2Idx++) {
+                Coordinate first = galaxies.get(g1Idx);
+                Coordinate second = galaxies.get(g2Idx);
                 long distance = Math.abs(first.x() - second.x()) + Math.abs(first.y() - second.y())
                         + getNrToAdd(first.x(), second.x(), columnNrsToExpand, timesToExpand)
                         + getNrToAdd(first.y(), second.y(), rowNrsToExpand, timesToExpand);

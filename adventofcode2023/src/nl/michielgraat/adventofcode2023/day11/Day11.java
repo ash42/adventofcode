@@ -1,0 +1,103 @@
+package nl.michielgraat.adventofcode2023.day11;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import nl.michielgraat.adventofcode2023.AocSolver;
+
+public class Day11 extends AocSolver {
+
+    protected Day11(String filename) {
+        super(filename);
+    }
+
+    private List<Integer> getColumnNrsToExpand(final List<String> input) {
+        List<Integer> columns = new ArrayList<>();
+        for (int x = 0; x < input.get(0).length(); x++) {
+            boolean foundGalaxy = false;
+            for (int y = 0; y < input.size(); y++) {
+                String line = input.get(y);
+                if (line.charAt(x) == '#') {
+                    foundGalaxy = true;
+                    break;
+                }
+            }
+            if (!foundGalaxy) {
+                columns.add(x);
+            }
+        }
+        return columns;
+    }
+
+    private List<Integer> getRowNrsToExpand(final List<String> input) {
+        List<Integer> rows = new ArrayList<>();
+        for (int y = 0; y < input.size(); y++) {
+            String line = input.get(y);
+            if (line.chars().allMatch(c -> c == '.')) {
+                rows.add(y);
+            }
+        }
+
+        return rows;
+    }
+
+    private List<Coordinate> getCoordinates(final List<String> image) {
+        List<Coordinate> coordinates = new ArrayList<>();
+        for (int y = 0; y < image.size(); y++) {
+            String row = image.get(y);
+            for (int x = 0; x < row.length(); x++) {
+                coordinates.add(new Coordinate(x, y, row.charAt(x) == '#'));
+            }
+        }
+        return coordinates;
+    }
+
+    private long getNrToAdd(int i, int j, List<Integer> toAdd, int timesToExpand) {
+        long total = 0;
+        int start = Math.min(i, j);
+        int end = Math.max(i, j);
+        for (int k = start; k < end; k++) {
+            if (toAdd.contains(k)) {
+                total++;
+            }
+        }
+        return total * (timesToExpand - 1);
+    }
+
+    private List<GalaxyPair> getGalaxyPairs(List<Coordinate> galaxies, int timesToExpand, List<Integer> rowNrsToExpand, List<Integer> columnNrsToExpand) {
+        List<GalaxyPair> pairs = new ArrayList<>();
+        for (int galaxy1 = 0; galaxy1 < galaxies.size() - 1; galaxy1++) {
+            for (int galaxy2 = galaxy1 + 1; galaxy2 < galaxies.size(); galaxy2++) {
+                Coordinate first = galaxies.get(galaxy1);
+                Coordinate second = galaxies.get(galaxy2);
+                long distance = Math.abs(first.x() - second.x()) + Math.abs(first.y() - second.y())
+                        + getNrToAdd(first.x(), second.x(), columnNrsToExpand, timesToExpand)
+                        + getNrToAdd(first.y(), second.y(), rowNrsToExpand, timesToExpand);
+                pairs.add(new GalaxyPair(first, second, distance));
+            }
+        }
+        return pairs;
+    }
+
+    @Override
+    protected String runPart2(final List<String> input) {
+        List<Coordinate> galaxies = getCoordinates(input).stream().filter(Coordinate::isGalaxy).toList();
+        List<Integer> rowNrsToExpand = getRowNrsToExpand(input);
+        List<Integer> columnNrsToExpand = getColumnNrsToExpand(input);
+        List<GalaxyPair> pairs = getGalaxyPairs(galaxies, 1000000, rowNrsToExpand, columnNrsToExpand);
+        return String.valueOf(pairs.stream().mapToLong(GalaxyPair::distance).sum());
+    }
+
+    @Override
+    protected String runPart1(final List<String> input) {
+        List<Coordinate> galaxies = getCoordinates(input).stream().filter(Coordinate::isGalaxy).toList();
+        List<Integer> rowNrsToExpand = getRowNrsToExpand(input);
+        List<Integer> columnNrsToExpand = getColumnNrsToExpand(input);
+        List<GalaxyPair> pairs = getGalaxyPairs(galaxies, 2, rowNrsToExpand, columnNrsToExpand);
+        return String.valueOf(pairs.stream().mapToLong(GalaxyPair::distance).sum());
+    }
+
+    public static void main(String... args) {
+        new Day11("day11.txt");
+    }
+}

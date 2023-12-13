@@ -87,9 +87,9 @@ public class Day13 extends AocSolver {
                 boolean matches = true;
                 boolean smudgeFound = false;
                 for (int el = 0; el < elementsToCheck; el++) {
-                    String upper = columns ? getColumn(i - el - 2, pattern) : pattern.get(i - el - 2);
-                    String lower = columns ? getColumn(i + el + 1, pattern) : pattern.get(i + el + 1);
-                    int nrSmudges = getNrSmudges(upper, lower);
+                    String first = columns ? getColumn(i - el - 2, pattern) : pattern.get(i - el - 2);
+                    String second = columns ? getColumn(i + el + 1, pattern) : pattern.get(i + el + 1);
+                    int nrSmudges = getNrSmudges(first, second);
                     // If the nr of smudges is greater than 1, there are too many smudges to
                     // continue.
                     // If we have 1 smudge, but the initial pair of rows also contains a smudge,

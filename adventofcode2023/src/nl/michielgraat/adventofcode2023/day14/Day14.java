@@ -2,7 +2,9 @@ package nl.michielgraat.adventofcode2023.day14;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import nl.michielgraat.adventofcode2023.AocSolver;
 
@@ -30,13 +32,20 @@ public class Day14 extends AocSolver {
     private List<Rock> tiltNorth(List<Rock> rocks) {
         Collections.sort(rocks);
         List<Rock> result = new ArrayList<>();
-
+        Map<Integer,Integer> columnToMax = new HashMap<>();
         for (Rock rock : rocks) {
-            int max = result.stream().filter(r -> r.x() == rock.x()).mapToInt(Rock::y).max().orElse(-1);
+            int max = -1;
+            if (!columnToMax.containsKey(rock.x())) {
+                max = result.stream().filter(r -> r.x() == rock.x()).mapToInt(Rock::y).max().orElse(-1);
+            } else {
+                max = columnToMax.get(rock.x());
+            }
             if (rock.type() == 'O') {
                 result.add(new Rock(rock.x(), rock.y() == 0 ? 0 : max + 1, rock.type()));
+                columnToMax.put(rock.x(),max+1);
             } else {
                 result.add(rock);
+                columnToMax.put(rock.x(), rock.y());
             }
         }
 
@@ -47,14 +56,21 @@ public class Day14 extends AocSolver {
         Collections.sort(rocks);
         Collections.reverse(rocks);
         List<Rock> result = new ArrayList<>();
-
+        Map<Integer,Integer> rowToMin = new HashMap<>();
         for (Rock rock : rocks) {
-            int min = result.stream().filter(r -> r.y() == rock.y()).mapToInt(Rock::x).min().orElse(maxX + 1);
+            int min = maxX+1;
+            if (!rowToMin.containsKey(rock.y())) {
+                min = result.stream().filter(r -> r.y() == rock.y()).mapToInt(Rock::x).min().orElse(maxX + 1);
+            } else {
+                min = rowToMin.get(rock.y());
+            }
             if (rock.type() == 'O') {
                 Rock r = new Rock(rock.x() == maxX ? maxX : min - 1, rock.y(), rock.type());
                 result.add(r);
+                rowToMin.put(rock.y(), min - 1);
             } else {
                 result.add(rock);
+                rowToMin.put(rock.y(), rock.x());
             }
         }
 
@@ -65,14 +81,21 @@ public class Day14 extends AocSolver {
         Collections.sort(rocks);
         Collections.reverse(rocks);
         List<Rock> result = new ArrayList<>();
-
+        Map<Integer,Integer> columnToMin = new HashMap<>();
         for (Rock rock : rocks) {
-            int min = result.stream().filter(r -> r.x() == rock.x()).mapToInt(Rock::y).min().orElse(maxY);
+            int min = maxY;
+            if (!columnToMin.containsKey(rock.x())) {
+                min = result.stream().filter(r -> r.x() == rock.x()).mapToInt(Rock::y).min().orElse(maxY);
+            } else {
+                min = columnToMin.get(rock.x());
+            }
             if (rock.type() == 'O') {
                 Rock r = new Rock(rock.x(), rock.y() == maxY ? maxY : min - 1, rock.type());
                 result.add(r);
+                columnToMin.put(rock.x(), min - 1);
             } else {
                 result.add(rock);
+                columnToMin.put(rock.x(), rock.y());
             }
         }
         return result;
@@ -81,14 +104,21 @@ public class Day14 extends AocSolver {
     private List<Rock> tiltWest(List<Rock> rocks) {
         Collections.sort(rocks);
         List<Rock> result = new ArrayList<>();
-
+        Map<Integer,Integer> rowToMax = new HashMap<>();
         for (Rock rock : rocks) {
-            int max = result.stream().filter(r -> r.y() == rock.y()).mapToInt(Rock::x).max().orElse(-1);
+            int max = -1;
+            if (!rowToMax.containsKey(rock.y())) {
+                max = result.stream().filter(r -> r.y() == rock.y()).mapToInt(Rock::x).max().orElse(-1);
+            } else {
+                max = rowToMax.get(rock.y());
+            }
             if (rock.type() == 'O') {
                 Rock r = new Rock(rock.x() == 0 ? 0 : max + 1, rock.y(), rock.type());
                 result.add(r);
+                rowToMax.put(rock.y(), max+1);
             } else {
                 result.add(rock);
+                rowToMax.put(rock.y(),rock.x());
             }
         }
 

@@ -96,11 +96,7 @@ public class Day15 extends AocSolver {
     @Override
     protected String runPart1(final List<String> input) {
         List<List<Integer>> steps = getSteps(Arrays.asList(input.get(0).split(",")));
-        int total = 0;
-        for (List<Integer> step : steps) {
-            total += calcHash(step);
-        }
-        return String.valueOf(total);
+        return String.valueOf(steps.stream().mapToInt(s -> calcHash(s)).sum());
     }
 
     public static void main(String... args) {

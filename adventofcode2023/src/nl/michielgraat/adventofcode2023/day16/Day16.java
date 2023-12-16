@@ -67,6 +67,7 @@ public class Day16 extends AocSolver {
 
         if (grid[y][x] == '.' || (grid[y][x] == '|' && (direction == UP || direction == DOWN))
                 || (grid[y][x] == '-' && (direction == LEFT || direction == RIGHT))) {
+            // Tile is empty or contains a splitter, but we are approaching it from the pointy end.
             int newX = (direction == UP || direction == DOWN) ? x : (direction == LEFT) ? x - 1 : x + 1;
             int newY = (direction == LEFT || direction == RIGHT) ? y : (direction == UP) ? y - 1 : y + 1;
             int nr = nrToAdd + getNrEnergizedTiles(newX, newY, grid, direction, loopSet, visitedSet);

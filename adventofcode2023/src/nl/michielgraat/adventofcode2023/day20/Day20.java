@@ -1,0 +1,26 @@
+package nl.michielgraat.adventofcode2023.day20;
+
+import java.util.List;
+
+import nl.michielgraat.adventofcode2023.AocSolver;
+
+public class Day20 extends AocSolver {
+
+    protected Day20(String filename) {
+        super(filename);
+    }
+
+    @Override
+    protected String runPart2(final List<String> input) {
+        return "part 2";
+    }
+
+    @Override
+    protected String runPart1(final List<String> input) {
+        return "part 1";
+    }
+    
+    public static void main(String... args) {
+        new Day20("day20.txt");
+    }
+}

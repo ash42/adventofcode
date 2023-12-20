@@ -72,7 +72,7 @@ public class Day19 extends AocSolver {
         return accepted;
     }
 
-    private void adjustRange(Range range, Workflow workflow, Map<String, Workflow> workflows,
+    private void getAcceptedRanges(Range range, Workflow workflow, Map<String, Workflow> workflows,
             List<Range> acceptedRanges) {
         for (Rule rule : workflow.rules()) {
             if (rule.isOperation()) {
@@ -81,13 +81,13 @@ public class Day19 extends AocSolver {
                 if (destination.equals("A")) {
                     acceptedRanges.add(adjustedRanges[0]);
                 } else if (!destination.equals("R")) {
-                    adjustRange(adjustedRanges[0], workflows.get(destination), workflows, acceptedRanges);
+                    getAcceptedRanges(adjustedRanges[0], workflows.get(destination), workflows, acceptedRanges);
                 }
                 range = adjustedRanges[1];
             } else if (rule.logic().equals("A")) {
                 acceptedRanges.add(range);
             } else if (!rule.logic().equals("R")) {
-                adjustRange(range, workflows.get(rule.logic()), workflows, acceptedRanges);
+                getAcceptedRanges(range, workflows.get(rule.logic()), workflows, acceptedRanges);
             }
         }
     }
@@ -96,7 +96,7 @@ public class Day19 extends AocSolver {
     protected String runPart2(final List<String> input) {
         Map<String, Workflow> workflows = readWorkflows(input);
         List<Range> acceptedRanges = new ArrayList<>();
-        adjustRange(new Range(), workflows.get("in"), workflows, acceptedRanges);
+        getAcceptedRanges(new Range(), workflows.get("in"), workflows, acceptedRanges);
         return String.valueOf(acceptedRanges.stream().mapToLong(Range::getCombinations).sum());
     }
 

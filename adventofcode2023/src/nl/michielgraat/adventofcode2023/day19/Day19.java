@@ -76,7 +76,6 @@ public class Day19 extends AocSolver {
             List<Range> acceptedRanges) {
         for (Rule rule : workflow.rules()) {
             if (rule.isOperation()) {
-
                 String destination = rule.getDestination().get();
                 Range[] adjustedRanges = range.split(rule);
                 if (destination.equals("A")) {

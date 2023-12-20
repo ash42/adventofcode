@@ -79,14 +79,22 @@ public class Day19 extends AocSolver {
                 String destination = rule.getDestination().get();
                 Range[] adjustedRanges = range.split(rule);
                 if (destination.equals("A")) {
+                    // Reached A, save the range
                     acceptedRanges.add(adjustedRanges[0]);
                 } else if (!destination.equals("R")) {
+                    // We will recursively continue with the destination, eg. the workflow which is
+                    // named in the rule
                     getAcceptedRanges(adjustedRanges[0], workflows.get(destination), workflows, acceptedRanges);
                 }
+                // We continue checking rules with the complement of the range used in the
+                // conditional above
                 range = adjustedRanges[1];
             } else if (rule.logic().equals("A")) {
+                // Reached A at the end of the workflow, save the range
                 acceptedRanges.add(range);
             } else if (!rule.logic().equals("R")) {
+                // We are at the end of the workflow, continue with the workflow named there (if
+                // not R).
                 getAcceptedRanges(range, workflows.get(rule.logic()), workflows, acceptedRanges);
             }
         }

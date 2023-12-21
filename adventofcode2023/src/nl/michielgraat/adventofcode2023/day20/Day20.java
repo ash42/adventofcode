@@ -118,7 +118,7 @@ public class Day20 extends AocSolver {
         for (int i = 1; i <= 1000; i++) {
             pushButton(nameToModule.get("button"), nameToModule, new LinkedList<>());
         }
-        return String.valueOf(nameToModule.get("button").nrLowPulsesSend * nameToModule.get("button").nrHighPulsesSend);
+        return String.valueOf(Module.nrLowPulsesSend * Module.nrHighPulsesSend);
     }
 
     public static void main(String... args) {

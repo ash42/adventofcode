@@ -12,6 +12,8 @@ public class ConjunctionModule extends Module {
 
     private Map<String, Pulse> inputMap;
 
+    private boolean sendHighPulse = false;
+
     public ConjunctionModule(String name) {
         super(name);
         inputMap = new HashMap<>();
@@ -28,9 +30,11 @@ public class ConjunctionModule extends Module {
         if (inputMap.values().stream().allMatch(p -> p == HIGH)) {
             destinations.forEach(d -> d.setInput(new PulseInput(name, LOW)));
             nrLowPulsesSend += destinations.size();
+            sendHighPulse = false;
         } else {
             destinations.forEach(d -> d.setInput(new PulseInput(name, HIGH)));
             nrHighPulsesSend += destinations.size();
+            sendHighPulse = true;
         }
     }
 
@@ -42,6 +46,10 @@ public class ConjunctionModule extends Module {
     @Override
     public boolean hasSendPulse() {
         return true;
+    }
+
+    public boolean hasSendHighPulse() {
+        return sendHighPulse;
     }
 
 }

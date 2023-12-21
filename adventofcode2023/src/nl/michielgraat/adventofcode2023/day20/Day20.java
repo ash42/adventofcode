@@ -109,6 +109,17 @@ public class Day20 extends AocSolver {
 
     @Override
     protected String runPart2(final List<String> input) {
+        Map<String, Module> nameToModule = readModules(input);
+        Module.resetPulseCounters();
+        for (long i = 1; ; i++) {
+            pushButton(nameToModule.get("button"), nameToModule, new LinkedList<>());
+            //qz cq jx tt
+            if (((ConjunctionModule) nameToModule.get("jx")).hasSendHighPulse()) {
+                System.out.println(i);
+                break;
+            }
+        }
+
         return "part 2";
     }
 

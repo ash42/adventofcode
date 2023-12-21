@@ -37,4 +37,9 @@ public abstract class Module {
     protected PulseInput getNextInput() {
         return inputQueue.pop();
     }
+
+    public static void resetPulseCounters() {
+        nrLowPulsesSend = 0;
+        nrHighPulsesSend = 0;
+    }
 }

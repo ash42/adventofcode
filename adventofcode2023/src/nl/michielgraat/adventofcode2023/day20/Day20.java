@@ -107,20 +107,82 @@ public class Day20 extends AocSolver {
         }
     }
 
+    private long lcm(long x, long y) {
+        long max = Math.max(x, y);
+        long min = Math.min(x, y);
+        long lcm = max;
+        while (lcm % min != 0) {
+            lcm += max;
+        }
+        return lcm;
+    }
+
+    private List<Module> getBinaryCounterGroup(Module source) {
+        List<Module> group = new ArrayList<>();
+        group.add(source);
+        for (Module destination : source.getDestinations()) {
+            if (destination instanceof FlipFlopModule) {
+                group.addAll(getBinaryCounterGroup(destination));
+            }
+        }
+        return group;
+    }
+
+    private String buildBinaryString(List<Module> group) {
+        StringBuilder sb = new StringBuilder();
+        for (Module module : group) {
+            boolean foundConjunction = false;
+            for (Module destination : module.getDestinations()) {
+                if (destination instanceof ConjunctionModule) {
+                    foundConjunction = true;
+                    break;
+                }
+            }
+            sb.append(foundConjunction ? "1" : "0");
+        }
+        return sb.reverse().toString();
+    }
+
+    private List<Integer> getNrsTillPulse(Map<String, Module> nameToModule) {
+        Module broadcaster = nameToModule.get("broadcaster");
+        List<Module> bcDestinations = broadcaster.getDestinations();
+        List<Integer> nrsTillPulse = new ArrayList<>();
+        for (Module bcDestination : bcDestinations) {
+            List<Module> group = getBinaryCounterGroup(bcDestination);
+            String binaryString = buildBinaryString(group);
+            nrsTillPulse.add(Integer.parseInt(binaryString, 2));
+        }
+        return nrsTillPulse;
+    }
+
     @Override
     protected String runPart2(final List<String> input) {
         Map<String, Module> nameToModule = readModules(input);
         Module.resetPulseCounters();
-        for (long i = 1; ; i++) {
-            pushButton(nameToModule.get("button"), nameToModule, new LinkedList<>());
-            //qz cq jx tt
-            if (((ConjunctionModule) nameToModule.get("jx")).hasSendHighPulse()) {
-                System.out.println(i);
-                break;
-            }
+        /*
+         * This took some massive analysis of the input. First, after a hint in
+         * /r/adventofcode, I used GraphViz to make a visual representation of my input.
+         * Analysing this, I saw that there are four groups of modules containing of a
+         * bunch of flip-flops and one "gateway" conjunction module which each act as
+         * a binary counter. I also understood that the number of button presses needed
+         * until 'rx' got a low pulse should be the lcm of the number of presses it
+         * takes for each group to send a pulse. It took me a while (and some hints in
+         * /r/adventofcode) to see that you can fabricate a binary number based upon
+         * which flip-flops send a pulse to the conjunction module (1 in the binary
+         * number) and which do not (a 0). Order is from last to first flip-flop in the
+         * chain starting immediately after the broadcaster module.
+         */
+
+        // For all groups described above how many button presses it takes until they
+        // send a pulse.
+        List<Integer> nrsTillPulse = getNrsTillPulse(nameToModule);
+        // Calculate the lcm of all these numbers and we're done.
+        long nrTillLowPulse = 1;
+        for (int nrTillPulse : nrsTillPulse) {
+            nrTillLowPulse = lcm(nrTillLowPulse, nrTillPulse);
         }
 
-        return "part 2";
+        return String.valueOf(nrTillLowPulse);
     }
 
     @Override

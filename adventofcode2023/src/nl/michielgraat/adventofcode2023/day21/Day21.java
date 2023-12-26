@@ -1,8 +1,11 @@
 package nl.michielgraat.adventofcode2023.day21;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 import nl.michielgraat.adventofcode2023.AocSolver;
@@ -11,6 +14,28 @@ public class Day21 extends AocSolver {
 
     protected Day21(String filename) {
         super(filename);
+    }
+
+    private Map<Coordinate, Integer> dijkstra(final Coordinate start, final List<Coordinate> coordinates) {
+        final PriorityQueue<Coordinate> queue = new PriorityQueue<>();
+        queue.offer(start);
+        final Map<Coordinate, Integer> distances = new HashMap<>();
+        distances.put(start, 0);
+        while (!queue.isEmpty()) {
+            final Coordinate current = queue.poll();
+            final int dist = distances.get(current);
+            final List<Coordinate> neighbours = current.getNeighbours(coordinates);
+            for (final Coordinate n : neighbours) {
+                int ndist = dist;
+                ndist++;
+                if (ndist < distances.getOrDefault(n, Integer.MAX_VALUE)) {
+                    distances.put(n, ndist);
+                    queue.add(n);
+                }
+            }
+        }
+
+        return distances;
     }
 
     private Coordinate getStart(List<String> input) {
@@ -55,13 +80,30 @@ public class Day21 extends AocSolver {
 
     @Override
     protected String runPart2(final List<String> input) {
-        return "part 2";
+        //Credit where credit is due, this is based on https://github.com/villuna/aoc23/wiki/A-Geometric-solution-to-advent-of-code-2023,-day-21
+        Map<Coordinate,Integer> paths = dijkstra(getStart(input), readCoordinates(input));
+        long nrEvenCorners = paths.entrySet().stream().filter(e -> e.getValue() > 65 && e.getValue() % 2 == 0).count();
+        long nrOddCorners = paths.entrySet().stream().filter(e -> e.getValue() > 65 && e.getValue() % 2 == 1).count();
+
+        long nrEvenPlots = paths.entrySet().stream().filter(e -> e.getValue() % 2 == 0).count();
+        long nrOddPlots = paths.entrySet().stream().filter(e -> e.getValue() % 2 == 1).count();
+
+        long n = (26501365-65)/131;
+
+        long totalNrOddPlotsInSingleMap = (n+1)*(n+1) * nrOddPlots;
+
+        long totalNrEvenPlotsInSingleMap = n*n*nrEvenPlots;
+
+        long nrForOddCorners = (n+1) * nrOddCorners;
+        long nrForEvenCorners = n * nrEvenCorners;
+
+        return String.valueOf(totalNrOddPlotsInSingleMap + totalNrEvenPlotsInSingleMap - nrForOddCorners + nrForEvenCorners);
     }
 
     @Override
     protected String runPart1(final List<String> input) {
-        Set<Coordinate> cs = getCoordinatesWithStepLength(getStart(input), 0, 64, readCoordinates(input), new HashSet<>());
-        return String.valueOf(cs.size());
+        Map<Coordinate,Integer> paths = dijkstra(getStart(input), readCoordinates(input));
+        return String.valueOf(paths.entrySet().stream().filter(e -> e.getValue() <= 64 && e.getValue() % 2 == 0).count());
     }
 
     public static void main(String... args) {

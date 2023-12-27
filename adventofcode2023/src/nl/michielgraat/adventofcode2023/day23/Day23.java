@@ -2,13 +2,8 @@ package nl.michielgraat.adventofcode2023.day23;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Queue;
 import java.util.Set;
 
 import nl.michielgraat.adventofcode2023.AocSolver;

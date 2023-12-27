@@ -116,7 +116,6 @@ public class Day23 extends AocSolver {
 
     @Override
     protected String runPart2(final List<String> input) {
-        System.out.println(new Date());
         return String.valueOf(getLongestPath(getStart(input).x(), getStart(input).y(), getEnd(input).x(),
                 getEnd(input).y(), readGrid(input), readGrid(input),false));
     }

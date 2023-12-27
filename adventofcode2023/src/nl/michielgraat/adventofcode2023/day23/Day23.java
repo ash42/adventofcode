@@ -1,10 +1,12 @@
 package nl.michielgraat.adventofcode2023.day23;
 
-import java.util.Date;
 import java.util.List;
 
 import nl.michielgraat.adventofcode2023.AocSolver;
 
+// Important: increase stack size to at least 2M (-Xss2m).
+// It is faster (about 1 minute) to completely separate the logic 
+// for both part2 over 2 methods, in stead of combining them into 1.
 public class Day23 extends AocSolver {
 
     protected Day23(String filename) {
@@ -43,9 +45,7 @@ public class Day23 extends AocSolver {
         return totalO;
     }
 
-    //Important: increase stack size to at least 2M (-Xss2m)
-    private int getLongestPath(int startX, int startY, int endX, int endY, char[][] grid, char[][] origGrid, boolean part1) {
-
+    private int getLengthPart1(int startX, int startY, int endX, int endY, char[][] grid, char[][] origGrid) {
         if (grid[startY][startX] == 'O') {
             return 0;
         } else if (startX == endX && startY == endY) {
@@ -54,56 +54,49 @@ public class Day23 extends AocSolver {
             grid[startY][startX] = 'O';
             int maxLength = 0;
 
-            if (part1 && origGrid[startY][startX] == '>') {
-                if (startX + 1 < grid[startY].length && grid[startY][startX + 1] != '#') {
-                    int nextLength = getLongestPath(startX + 1, startY, endX, endY, grid, origGrid,part1);
-                    if (nextLength > maxLength) {
-                        maxLength = nextLength;
-                    }
+            char current = origGrid[startY][startX];
+
+            if (current == '>' && startX + 1 < grid[startY].length && grid[startY][startX + 1] != '#') {
+                int nextLength = getLengthPart1(startX + 1, startY, endX, endY, grid, origGrid);
+                if (nextLength > maxLength) {
+                    maxLength = nextLength;
                 }
-            } else if (part1 && origGrid[startY][startX] == '<') {
-                if (startX - 1 >= 0 && grid[startY][startX - 1] != '#') {
-                    int nextLength = getLongestPath(startX - 1, startY, endX, endY, grid,origGrid, part1);
-                    if (nextLength > maxLength) {
-                        maxLength = nextLength;
-                    }
+            } else if (current == '<' && startX - 1 >= 0 && grid[startY][startX - 1] != '#') {
+                int nextLength = getLengthPart1(startX - 1, startY, endX, endY, grid, origGrid);
+                if (nextLength > maxLength) {
+                    maxLength = nextLength;
                 }
-            } else if (part1 && origGrid[startY][startX] == '^') {
-                if (startY - 1 >= 0 && grid[startY - 1][startX] != '#') {
-                    int nextLength = getLongestPath(startX, startY - 1, endX, endY, grid, origGrid,part1);
-                    if (nextLength > maxLength) {
-                        maxLength = nextLength;
-                    }
+            } else if (current == '^' && startY - 1 >= 0 && grid[startY - 1][startX] != '#') {
+                int nextLength = getLengthPart1(startX, startY - 1, endX, endY, grid, origGrid);
+                if (nextLength > maxLength) {
+                    maxLength = nextLength;
                 }
-            } else if (part1 && origGrid[startY][startX] == 'v') {
-                if (startY + 1 < grid.length
-                        && grid[startY + 1][startX] != '#') {
-                    int nextLength = getLongestPath(startX, startY + 1, endX, endY, grid,origGrid, part1);
-                    if (nextLength > maxLength) {
-                        maxLength = nextLength;
-                    }
+            } else if (current == 'v' && startY + 1 < grid.length && grid[startY + 1][startX] != '#') {
+                int nextLength = getLengthPart1(startX, startY + 1, endX, endY, grid, origGrid);
+                if (nextLength > maxLength) {
+                    maxLength = nextLength;
                 }
             } else {
                 if (startY - 1 >= 0 && grid[startY - 1][startX] != '#') {
-                    int nextLength = getLongestPath(startX, startY - 1, endX, endY, grid,origGrid, part1);
+                    int nextLength = getLengthPart1(startX, startY - 1, endX, endY, grid, origGrid);
                     if (nextLength > maxLength) {
                         maxLength = nextLength;
                     }
                 }
                 if (startX + 1 < grid[startY].length && grid[startY][startX + 1] != '#') {
-                    int nextLength = getLongestPath(startX + 1, startY, endX, endY, grid,origGrid, part1);
+                    int nextLength = getLengthPart1(startX + 1, startY, endX, endY, grid, origGrid);
                     if (nextLength > maxLength) {
                         maxLength = nextLength;
                     }
                 }
                 if (startY + 1 < grid.length && grid[startY + 1][startX] != '#') {
-                    int nextLength = getLongestPath(startX, startY + 1, endX, endY, grid,origGrid, part1);
+                    int nextLength = getLengthPart1(startX, startY + 1, endX, endY, grid, origGrid);
                     if (nextLength > maxLength) {
                         maxLength = nextLength;
                     }
                 }
                 if (startX - 1 >= 0 && grid[startY][startX - 1] != '#') {
-                    int nextLength = getLongestPath(startX - 1, startY, endX, endY, grid, origGrid,part1);
+                    int nextLength = getLengthPart1(startX - 1, startY, endX, endY, grid, origGrid);
                     if (nextLength > maxLength) {
                         maxLength = nextLength;
                     }
@@ -114,16 +107,54 @@ public class Day23 extends AocSolver {
         }
     }
 
+    private int getLengthPart2(int startX, int startY, int endX, int endY, char[][] grid, char[][] origGrid) {
+        if (grid[startY][startX] == 'O') {
+            return 0;
+        } else if (startX == endX && startY == endY) {
+            return getPathLength(grid);
+        } else {
+            grid[startY][startX] = 'O';
+            int maxLength = 0;
+            if (startY - 1 >= 0 && grid[startY - 1][startX] != '#') {
+                int nextLength = getLengthPart2(startX, startY - 1, endX, endY, grid, origGrid);
+                if (nextLength > maxLength) {
+                    maxLength = nextLength;
+                }
+            }
+            if (startX + 1 < grid[startY].length && grid[startY][startX + 1] != '#') {
+                int nextLength = getLengthPart2(startX + 1, startY, endX, endY, grid, origGrid);
+                if (nextLength > maxLength) {
+                    maxLength = nextLength;
+                }
+            }
+            if (startY + 1 < grid.length && grid[startY + 1][startX] != '#') {
+                int nextLength = getLengthPart2(startX, startY + 1, endX, endY, grid, origGrid);
+                if (nextLength > maxLength) {
+                    maxLength = nextLength;
+                }
+            }
+            if (startX - 1 >= 0 && grid[startY][startX - 1] != '#') {
+                int nextLength = getLengthPart2(startX - 1, startY, endX, endY, grid, origGrid);
+                if (nextLength > maxLength) {
+                    maxLength = nextLength;
+                }
+            }
+
+            grid[startY][startX] = '.';
+            return maxLength;
+        }
+    }
+
     @Override
     protected String runPart2(final List<String> input) {
-        return String.valueOf(getLongestPath(getStart(input).x(), getStart(input).y(), getEnd(input).x(),
-                getEnd(input).y(), readGrid(input), readGrid(input),false));
+        return String.valueOf(getLengthPart2(getStart(input).x(), getStart(input).y(), getEnd(input).x(),
+                getEnd(input).y(), readGrid(input), readGrid(input)));
     }
 
     @Override
     protected String runPart1(final List<String> input) {
-        return String.valueOf(getLongestPath(getStart(input).x(), getStart(input).y(), getEnd(input).x(),
-                getEnd(input).y(), readGrid(input), readGrid(input),true));
+        return String.valueOf(getLengthPart1(getStart(input).x(), getStart(input).y(), getEnd(input).x(),
+                getEnd(input).y(), readGrid(input), readGrid(input)));
     }
 
     public static void main(String... args) {

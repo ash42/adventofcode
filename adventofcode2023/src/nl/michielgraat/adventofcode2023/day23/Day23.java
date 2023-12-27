@@ -1,10 +1,7 @@
 package nl.michielgraat.adventofcode2023.day23;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import nl.michielgraat.adventofcode2023.AocSolver;
 
@@ -33,39 +30,101 @@ public class Day23 extends AocSolver {
         return new Coordinate(line.indexOf('.'), input.size() - 1);
     }
 
-    //IMPORTANT: increase stack size to at least 2MB: -Xss2m
-    private List<Coordinate> getLongestPath(Coordinate start, Coordinate end, Set<Coordinate> visited, char[][] grid, boolean part1) {
-        List<Coordinate> path = new ArrayList<>();
-        if (visited.contains(start)) {
-            return path;
-        } else if (start.equals(end)) {
-            path.add(start);
-            return path;
-        } else {
-            visited.add(start);
-            int maxLength = 0;
-            for (Coordinate neighbour : start.getNeighbours(grid, part1)) {
-                List<Coordinate> rPath = getLongestPath(neighbour, end, visited, grid, part1);
-                if (!rPath.isEmpty() && rPath.size() > maxLength) {
-                    maxLength = rPath.size();
-                    rPath.add(0, start);
-                    path = rPath;
+    private int getPathLength(char[][] grid) {
+        int totalO = 0;
+
+        for (int y = 0; y < grid.length; y++) {
+            for (int x = 0; x < grid[y].length; x++) {
+                if (grid[y][x] == 'O') {
+                    totalO++;
                 }
             }
-            visited.remove(start);
         }
-        return path;
+        return totalO;
+    }
+
+    //Important: increase stack size to at least 2M (-Xss2m)
+    private int getLongestPath(int startX, int startY, int endX, int endY, char[][] grid, char[][] origGrid, boolean part1) {
+
+        if (grid[startY][startX] == 'O') {
+            return 0;
+        } else if (startX == endX && startY == endY) {
+            return getPathLength(grid);
+        } else {
+            grid[startY][startX] = 'O';
+            int maxLength = 0;
+
+            if (part1 && origGrid[startY][startX] == '>') {
+                if (startX + 1 < grid[startY].length && grid[startY][startX + 1] != '#') {
+                    int nextLength = getLongestPath(startX + 1, startY, endX, endY, grid, origGrid,part1);
+                    if (nextLength > maxLength) {
+                        maxLength = nextLength;
+                    }
+                }
+            } else if (part1 && origGrid[startY][startX] == '<') {
+                if (startX - 1 >= 0 && grid[startY][startX - 1] != '#') {
+                    int nextLength = getLongestPath(startX - 1, startY, endX, endY, grid,origGrid, part1);
+                    if (nextLength > maxLength) {
+                        maxLength = nextLength;
+                    }
+                }
+            } else if (part1 && origGrid[startY][startX] == '^') {
+                if (startY - 1 >= 0 && grid[startY - 1][startX] != '#') {
+                    int nextLength = getLongestPath(startX, startY - 1, endX, endY, grid, origGrid,part1);
+                    if (nextLength > maxLength) {
+                        maxLength = nextLength;
+                    }
+                }
+            } else if (part1 && origGrid[startY][startX] == 'v') {
+                if (startY + 1 < grid.length
+                        && grid[startY + 1][startX] != '#') {
+                    int nextLength = getLongestPath(startX, startY + 1, endX, endY, grid,origGrid, part1);
+                    if (nextLength > maxLength) {
+                        maxLength = nextLength;
+                    }
+                }
+            } else {
+                if (startY - 1 >= 0 && grid[startY - 1][startX] != '#') {
+                    int nextLength = getLongestPath(startX, startY - 1, endX, endY, grid,origGrid, part1);
+                    if (nextLength > maxLength) {
+                        maxLength = nextLength;
+                    }
+                }
+                if (startX + 1 < grid[startY].length && grid[startY][startX + 1] != '#') {
+                    int nextLength = getLongestPath(startX + 1, startY, endX, endY, grid,origGrid, part1);
+                    if (nextLength > maxLength) {
+                        maxLength = nextLength;
+                    }
+                }
+                if (startY + 1 < grid.length && grid[startY + 1][startX] != '#') {
+                    int nextLength = getLongestPath(startX, startY + 1, endX, endY, grid,origGrid, part1);
+                    if (nextLength > maxLength) {
+                        maxLength = nextLength;
+                    }
+                }
+                if (startX - 1 >= 0 && grid[startY][startX - 1] != '#') {
+                    int nextLength = getLongestPath(startX - 1, startY, endX, endY, grid, origGrid,part1);
+                    if (nextLength > maxLength) {
+                        maxLength = nextLength;
+                    }
+                }
+            }
+            grid[startY][startX] = '.';
+            return maxLength;
+        }
     }
 
     @Override
     protected String runPart2(final List<String> input) {
         System.out.println(new Date());
-        return String.valueOf(getLongestPath(getStart(input), getEnd(input), new HashSet<>(), readGrid(input), false).size() - 1);
+        return String.valueOf(getLongestPath(getStart(input).x(), getStart(input).y(), getEnd(input).x(),
+                getEnd(input).y(), readGrid(input), readGrid(input),false));
     }
 
     @Override
     protected String runPart1(final List<String> input) {
-        return String.valueOf(getLongestPath(getStart(input), getEnd(input), new HashSet<>(), readGrid(input), true).size() - 1);
+        return String.valueOf(getLongestPath(getStart(input).x(), getStart(input).y(), getEnd(input).x(),
+                getEnd(input).y(), readGrid(input), readGrid(input),true));
     }
 
     public static void main(String... args) {

@@ -13,20 +13,12 @@ public class Day03 extends AocSolver {
         super(filename);
     }
 
-    private int multiply(String match) {
-        match = match.substring(4);
-        match = match.substring(0, match.length() - 1);
-        final int val1 = Integer.parseInt(match.split(",")[0]);
-        final int val2 = Integer.parseInt(match.split(",")[1]);
-        return val1 * val2;
-    }
-
     private int getTotal(final List<String> input) {
         int total = 0;
         for (final String line : input) {
-            final Matcher matcher = Pattern.compile("mul\\(\\d{1,3},\\d{1,3}\\)").matcher(line);
+            final Matcher matcher = Pattern.compile("mul\\((\\d{1,3}),(\\d{1,3})\\)").matcher(line);
             while (matcher.find()) {
-                total += multiply(matcher.group());
+                total += Integer.parseInt(matcher.group(1)) * Integer.parseInt(matcher.group(2));
             }
         }
         return total;
@@ -57,14 +49,14 @@ public class Day03 extends AocSolver {
     private int getTotalConditionally(final String memory) {
         final TreeMap<Integer, Boolean> multIndexes = getSortedDoDontIndexes(memory);
         int total = 0;
-        final Matcher matcher = Pattern.compile("mul\\(\\d{1,3},\\d{1,3}\\)").matcher(memory);
+        final Matcher matcher = Pattern.compile("mul\\((\\d{1,3}),(\\d{1,3})\\)").matcher(memory);
 
         while (matcher.find()) {
             final int index = matcher.start();
             final boolean multiply = multIndexes.floorKey(index) != null ? multIndexes.get(multIndexes.floorKey(index))
                     : true;
             if (multiply) {
-                total += multiply(matcher.group());
+                total += Integer.parseInt(matcher.group(1)) * Integer.parseInt(matcher.group(2));
             }
         }
         return total;

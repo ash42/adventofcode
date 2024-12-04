@@ -84,7 +84,6 @@ public class Day04 extends AocSolver {
                         nrXmas++;
                 }
             }
-
         }
         return nrXmas;
     }

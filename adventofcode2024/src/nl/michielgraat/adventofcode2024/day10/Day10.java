@@ -57,32 +57,28 @@ public class Day10 extends AocSolver {
         }
     }
 
-    @Override
-    protected String runPart2(final List<String> input) {
-        final int[][] grid = getGrid(input);
+    private int calculateTotalScore(final int[][] grid, final boolean part1) {
         int total = 0;
         for (int y = 0; y < grid.length; y++) {
             for (int x = 0; x < grid[y].length; x++) {
                 if (grid[y][x] == 0) {
-                    total += calculateScore(x, y, grid, new boolean[grid.length][grid[0].length], false);
+                    total += calculateScore(x, y, grid, new boolean[grid.length][grid[0].length], part1);
                 }
             }
         }
-        return String.valueOf(total);
+        return total;
+    }
+
+    @Override
+    protected String runPart2(final List<String> input) {
+        final int[][] grid = getGrid(input);
+        return String.valueOf(calculateTotalScore(grid, false));
     }
 
     @Override
     protected String runPart1(final List<String> input) {
         final int[][] grid = getGrid(input);
-        int total = 0;
-        for (int y = 0; y < grid.length; y++) {
-            for (int x = 0; x < grid[y].length; x++) {
-                if (grid[y][x] == 0) {
-                    total += calculateScore(x, y, grid, new boolean[grid.length][grid[0].length], true);
-                }
-            }
-        }
-        return String.valueOf(total);
+        return String.valueOf(calculateTotalScore(grid, true));
     }
 
     public static void main(final String... args) {

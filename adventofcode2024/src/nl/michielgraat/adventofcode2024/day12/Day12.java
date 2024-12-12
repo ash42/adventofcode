@@ -104,21 +104,21 @@ public class Day12 extends AocSolver {
                 || hasUnvisitedLowerNeighbour(x, y, name, plot, visited);
     }
 
-    private int calculatePerimiter(final int x, final int y, final char name, final char[][] plot) {
-        int perimiter = 0;
+    private int calculatePerimeter(final int x, final int y, final char name, final char[][] plot) {
+        int perimeter = 0;
         if (!hasLeftNeighbour(x, y, name, plot)) {
-            perimiter++;
+            perimeter++;
         }
         if (!hasRightNeighbour(x, y, name, plot)) {
-            perimiter++;
+            perimeter++;
         }
         if (!hasUpperNeighbour(x, y, name, plot)) {
-            perimiter++;
+            perimeter++;
         }
         if (!hasLowerNeighbour(x, y, name, plot)) {
-            perimiter++;
+            perimeter++;
         }
-        return perimiter;
+        return perimeter;
     }
 
     private int getNumberOfSides(final Set<Position> positions) {
@@ -176,35 +176,35 @@ public class Day12 extends AocSolver {
         }
     }
 
-    private List<SizePerimiter> calculatePriceWithPerimiter(final int x, final int y, final char name,
+    private List<SizePerimeter> calculatePriceWithPerimeter(final int x, final int y, final char name,
             final char[][] plot, final boolean[][] visited,
-            final int size, int perimiter) {
-        final List<SizePerimiter> result = new ArrayList<>();
+            final int size, int perimeter) {
+        final List<SizePerimeter> result = new ArrayList<>();
         visited[y][x] = true;
-        perimiter += calculatePerimiter(x, y, name, plot);
+        perimeter += calculatePerimeter(x, y, name, plot);
         if (!hasUnvisitedNeighbours(x, y, name, plot, visited)) {
-            result.add(new SizePerimiter(size, perimiter));
+            result.add(new SizePerimeter(size, perimeter));
             return result;
         } else {
             boolean visitedNeighbour = false;
             if (hasUnvisitedLeftNeighbour(x, y, name, plot, visited)) {
-                result.addAll(calculatePriceWithPerimiter(x - 1, y, name, plot, visited,
-                        visitedNeighbour ? 1 : size + 1, visitedNeighbour ? 0 : perimiter));
+                result.addAll(calculatePriceWithPerimeter(x - 1, y, name, plot, visited,
+                        visitedNeighbour ? 1 : size + 1, visitedNeighbour ? 0 : perimeter));
                 visitedNeighbour = true;
             }
             if (hasUnvisitedRightNeighbour(x, y, name, plot, visited)) {
-                result.addAll(calculatePriceWithPerimiter(x + 1, y, name, plot, visited,
-                        visitedNeighbour ? 1 : size + 1, visitedNeighbour ? 0 : perimiter));
+                result.addAll(calculatePriceWithPerimeter(x + 1, y, name, plot, visited,
+                        visitedNeighbour ? 1 : size + 1, visitedNeighbour ? 0 : perimeter));
                 visitedNeighbour = true;
             }
             if (hasUnvisitedUpperNeighbour(x, y, name, plot, visited)) {
-                result.addAll(calculatePriceWithPerimiter(x, y - 1, name, plot, visited,
-                        visitedNeighbour ? 1 : size + 1, visitedNeighbour ? 0 : perimiter));
+                result.addAll(calculatePriceWithPerimeter(x, y - 1, name, plot, visited,
+                        visitedNeighbour ? 1 : size + 1, visitedNeighbour ? 0 : perimeter));
                 visitedNeighbour = true;
             }
             if (hasUnvisitedLowerNeighbour(x, y, name, plot, visited)) {
-                result.addAll(calculatePriceWithPerimiter(x, y + 1, name, plot, visited,
-                        visitedNeighbour ? 1 : size + 1, visitedNeighbour ? 0 : perimiter));
+                result.addAll(calculatePriceWithPerimeter(x, y + 1, name, plot, visited,
+                        visitedNeighbour ? 1 : size + 1, visitedNeighbour ? 0 : perimeter));
                 visitedNeighbour = true;
             }
             return result;
@@ -225,16 +225,16 @@ public class Day12 extends AocSolver {
         return totalPrice;
     }
 
-    private int calculatePriceWithPerimiter(final char[][] plot) {
+    private int calculatePriceWithPerimeter(final char[][] plot) {
         final boolean[][] visited = new boolean[plot.length][plot[0].length];
         int totalPrice = 0;
         for (int y = 0; y < plot.length; y++) {
             for (int x = 0; x < plot[0].length; x++) {
                 if (!visited[y][x]) {
-                    final List<SizePerimiter> result = calculatePriceWithPerimiter(x, y, plot[y][x], plot, visited, 1,
+                    final List<SizePerimeter> result = calculatePriceWithPerimeter(x, y, plot[y][x], plot, visited, 1,
                             0);
                     totalPrice += result.stream().mapToInt(r -> r.size()).sum()
-                            * result.stream().mapToInt(r -> r.perimiter()).sum();
+                            * result.stream().mapToInt(r -> r.perimeter()).sum();
                 }
             }
         }
@@ -248,7 +248,7 @@ public class Day12 extends AocSolver {
 
     @Override
     protected String runPart1(final List<String> input) {
-        return String.valueOf(calculatePriceWithPerimiter(getPlot(input)));
+        return String.valueOf(calculatePriceWithPerimeter(getPlot(input)));
     }
 
     public static void main(final String... args) {
@@ -256,7 +256,7 @@ public class Day12 extends AocSolver {
     }
 }
 
-record SizePerimiter(int size, int perimiter) {
+record SizePerimeter(int size, int perimeter) {
 }
 
 record Position(int x, int y) {

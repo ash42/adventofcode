@@ -35,8 +35,8 @@ public class Day23 extends AocSolver {
     private Set<List<Node>> findTriangles(final List<Node> nodes) {
         final Set<List<Node>> triangles = new HashSet<>();
         // Loop over every node, this is "current". Fetch its adjacent nodes and finally
-        // the adjacent nodes to these ones. These adjacent-adjacent nodes should also
-        // be an adjacent node to current, if so, we have a triangle.
+        // the adjacent nodes to these ones. There should be a connection to current in
+        // these adjacent-adjacent nodes, if so, we have a triangle.
         for (final Node current : nodes) {
             for (Node adj : current.getAdjacentNodes()) {
                 // Fetch from original list, because only there all adjacent nodes to this node

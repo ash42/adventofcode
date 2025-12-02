@@ -56,12 +56,12 @@ public class Day02 extends AocSolver {
             final String[] boundaries = sequence.split("-");
 
             for (long id = Long.parseLong(boundaries[0]); id <= Long.parseLong(boundaries[1]); id++) {
-                final String sValue = String.valueOf(id);
-                if (sValue.length() % 2 == 0) {
-                    final int half = sValue.length() / 2;
-                    if (sValue.substring(0, half).equals(sValue.substring(half))) {
-                        total += id;
-                    }
+                final int length = (int) (Math.log10(id) + 1);
+                final long div = (long) Math.pow(10, length / 2);
+                final long first = id / div;
+                final long second = id % div;
+                if (first == second) {
+                    total += id;
                 }
             }
         }

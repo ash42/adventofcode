@@ -33,11 +33,12 @@ public class DailySetup {
 
     private static void createSrc(int day) throws IOException {
         Path dirPath = Paths.get("src", "nl", "michielgraat", "adventofcode2025", getSrcDirectory(day));
-        Path filePath = Paths.get("src", "nl", "michielgraat", "adventofcode2025", getSrcDirectory(day), getSrcFile(day));
+        Path filePath = Paths.get("src", "nl", "michielgraat", "adventofcode2025", getSrcDirectory(day),
+                getSrcFile(day));
         Path skelPath = Paths.get("src", "nl", "michielgraat", "adventofcode2025", "skeleton", "Skeleton.java");
         if (!dirPath.toFile().exists()) {
             Files.createDirectories(dirPath);
-        } 
+        }
         if (!filePath.toFile().exists()) {
             Files.copy(skelPath, filePath);
         }
@@ -115,12 +116,13 @@ public class DailySetup {
         return (day < 10 ? "0" : "") + day;
     }
 
-    private static List<String> getInput(int day, String sessionId, String emailAddress) throws IOException, URISyntaxException {
+    private static List<String> getInput(int day, String sessionId, String emailAddress)
+            throws IOException, URISyntaxException {
         BufferedReader in = null;
         HttpURLConnection con = null;
         try {
             URI uri = new URI("https://adventofcode.com/2025/day/" + day + "/input");
-            URL url = new URL("https://adventofcode.com/2025/day/" + day + "/input");
+            URL url = uri.toURL();
 
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod("GET");
@@ -167,10 +169,10 @@ public class DailySetup {
     }
 
     public static void main(String... args) {
-       try {
-        DailySetup.setupDay();
-       } catch (IOException | URISyntaxException e) {
-        e.printStackTrace();
-       }
+        try {
+            DailySetup.setupDay();
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,11 +22,11 @@ import java.util.stream.Stream;
 
 public class DailySetup {
 
-    public static void setupDay() throws IOException {
+    public static void setupDay() throws IOException, URISyntaxException {
         setupDay(getDay());
     }
 
-    public static void setupDay(int day) throws IOException {
+    public static void setupDay(int day) throws IOException, URISyntaxException {
         downloadInput(day);
         createSrc(day);
     }
@@ -45,7 +47,7 @@ public class DailySetup {
         Files.write(filePath, content.getBytes());
     }
 
-    private static void downloadInput(int day) throws IOException {
+    private static void downloadInput(int day) throws IOException, URISyntaxException {
         List<String> configuration = getConfig();
         String emailAddress = configuration.get(0);
         String sessionId = configuration.get(1);
@@ -113,10 +115,11 @@ public class DailySetup {
         return (day < 10 ? "0" : "") + day;
     }
 
-    private static List<String> getInput(int day, String sessionId, String emailAddress) throws IOException {
+    private static List<String> getInput(int day, String sessionId, String emailAddress) throws IOException, URISyntaxException {
         BufferedReader in = null;
         HttpURLConnection con = null;
         try {
+            URI uri = new URI("https://adventofcode.com/2025/day/" + day + "/input");
             URL url = new URL("https://adventofcode.com/2025/day/" + day + "/input");
 
             con = (HttpURLConnection) url.openConnection();
@@ -164,10 +167,10 @@ public class DailySetup {
     }
 
     public static void main(String... args) {
-        try {
-            DailySetup.setupDay();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       try {
+        DailySetup.setupDay();
+       } catch (IOException | URISyntaxException e) {
+        e.printStackTrace();
+       }
     }
 }

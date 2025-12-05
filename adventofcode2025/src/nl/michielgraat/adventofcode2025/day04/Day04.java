@@ -73,14 +73,15 @@ public class Day04 extends AocSolver {
     private int getNrOfRemovableRolls(int[][] grid) {
         int total = 0;
         int removed = 0;
-        
+        int nrLoops = 0;
         do {
+            nrLoops++;
             final int nrRolls = Arrays.stream(grid).flatMapToInt(x -> Arrays.stream(x)).filter(i -> i == 1).sum();
             grid = removeRolls(grid);
             removed = nrRolls - Arrays.stream(grid).flatMapToInt(x -> Arrays.stream(x)).filter(i -> i == 1).sum();
             total += removed;
         } while (removed != 0);
-
+        System.out.println(nrLoops);
         return total;
     }
 

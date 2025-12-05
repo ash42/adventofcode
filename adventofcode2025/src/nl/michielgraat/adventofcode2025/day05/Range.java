@@ -43,7 +43,7 @@ public class Range {
                 (this.start <= other.start && this.end >= other.end));
     }
  
-    public void adjust(final Range other) {
+    public void combine(final Range other) {
         if (overlaps(other)) {
             this.start = Math.min(this.start, other.start);
             this.end = Math.max(this.end, other.end);

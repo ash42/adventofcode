@@ -47,7 +47,7 @@ public class Day05 extends AocSolver {
             for (final Range range : ranges) {
                 for (final Range range2 : ranges) {
                     if (range.overlaps(range2)) {
-                        range.adjust(range2);
+                        range.combine(range2);
                         changedRange = true;
                     }
                     newRanges.add(range);

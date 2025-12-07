@@ -2,8 +2,10 @@ package nl.michielgraat.adventofcode2025.day07;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import nl.michielgraat.adventofcode2025.AocSolver;
 
@@ -35,6 +37,11 @@ public class Day07 extends AocSolver {
             // There is a splitter left or right from the current path, this means that the
             // initial splitter can be reached from here (because the beam has split at the
             // splitter left or right), so it can be part of the beam.
+            // Note: This shouldn't work for cases in which there is another splitter above
+            // the left or right splitters, but it seems to work on all inputs (@see
+            // https://www.reddit.com/r/adventofcode/comments/1pgpxcn/2025_day_7_part_1_is_this_just_luck_or_am_i/
+            // ). However, this does not completely sit right with me, so I have another
+            // implementation: findNrOfSplitsBetter :)
             return true;
         } else if (grid[y][x] == '^') {
             // Found another splitter directly above the splitter we started from, so there
@@ -60,6 +67,34 @@ public class Day07 extends AocSolver {
             }
         }
         return total;
+    }
+
+    private int findNrOfSplitsBetter(final char[][] grid) {
+        // Start at S, store its x-coordinate in a set (since x-coordinates represent
+        // the position of the beam), if we encounter a splitter, we add the x-values of
+        // the coordinates next to it to the set, and remove the current x. And of
+        // course, add 1 to the counter for total number of splits.
+        final Coordinate start = findStart(grid);
+        final Set<Integer> xCoords = new HashSet<>();
+        xCoords.add(start.x());
+        int totalNrOfSplits = 0;
+        for (int y = 0; y < grid.length; y++) {
+            for (int x = 0; x < grid[y].length; x++) {
+                if (grid[y][x] == '^') {
+                    if (xCoords.contains(x)) {
+                        if (x - 1 >= 0 && grid[y][x - 1] != '^') {
+                            xCoords.add(x - 1);
+                        }
+                        if (x + 1 < grid[y].length && grid[y][x + 1] != '^') {
+                            xCoords.add(x + 1);
+                        }
+                        xCoords.remove(x);
+                        totalNrOfSplits++;
+                    }
+                }
+            }
+        }
+        return totalNrOfSplits;
     }
 
     private Coordinate findStart(final char[][] grid) {
@@ -135,7 +170,7 @@ public class Day07 extends AocSolver {
 
     @Override
     protected String runPart1(final List<String> input) {
-        return String.valueOf(findNrOfSplits(parseGrid(input)));
+        return String.valueOf(findNrOfSplitsBetter(parseGrid(input)));
     }
 
     public static void main(final String... args) {

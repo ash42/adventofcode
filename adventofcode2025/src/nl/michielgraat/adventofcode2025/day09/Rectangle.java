@@ -34,8 +34,8 @@ public record Rectangle(RedTile r1, RedTile r2) {
             // with any of the edges. For most cases this is no problem (as all rectangles
             // we generate have corners which are red tile), but for some cases (like the
             // rectangle defined by (2,5) to (9,7) in the test input) this gives incorrect
-            // results. Because of the way the input is constructed this does not lead to
-            // problems for the actual answer.
+            // results. Because of the way the input is constructed (basically like a big
+            // circle) this does not lead to problems for the actual answer.
             //
             // This also works (the rectangle does not intersect with an edge) if one of the
             // edges of the polygon also happens to be the edge of the rectangle (as we are

@@ -39,7 +39,6 @@ public class Day11 extends AocSolver {
             long total = 0;
             for (final String output : devices.get(current)) {
                 total += countNrPaths(output, finish, devices, memo);
-
             }
             memo.put(current, total);
             return total;

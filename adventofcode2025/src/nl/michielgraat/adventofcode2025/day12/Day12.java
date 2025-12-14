@@ -15,15 +15,6 @@ public class Day12 extends AocSolver {
         super(filename);
     }
 
-    private String printGrid(final int[][] grid) {
-        final StringBuilder sb = new StringBuilder();
-        for (int y = 0; y < grid.length; y++) {
-            sb.append(Arrays.toString(grid[y]));
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
     private int[][] transpose(final int[][] grid) {
         final int[][] result = new int[grid[0].length][grid.length];
         for (int y = 0; y < grid.length; y++) {
